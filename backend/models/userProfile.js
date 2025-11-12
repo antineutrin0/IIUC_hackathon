@@ -37,8 +37,13 @@ const ProjectSchema = new Schema({
   endDate: { type: Date },
   isOngoing: { type: Boolean, default: false },
 }, { _id: false });
-
-const ProfileSchema = new Schema({
+ 
+const UserProfileSchema = new Schema({
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   skills: { type: [String], default: [], set: arr => Array.from(new Set((arr || []).map(s => s.trim().toLowerCase()))) },
   projects: { type: [ProjectSchema], default: [] },
   education: { type: [EducationSchema], default: [] },
@@ -57,4 +62,4 @@ const ProfileSchema = new Schema({
   lastProfileUpdateAt: { type: Date, default: Date.now },
 }, { timestamps: true });
 
-export const Profile = mongoose.model('Profile', ProfileSchema);
+export const UserProfile = mongoose.model('UserProfile', UserProfileSchema);

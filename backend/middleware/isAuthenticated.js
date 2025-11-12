@@ -48,3 +48,14 @@ export const isAuthenticated = async(req, res, next) =>{
         })
     }
 }
+
+export const authorizeUserType = (...allowedTypes) => {
+  return (req, res, next) => {
+    if (!allowedTypes.includes(req.user.userType)) {
+      return res.status(403).json({ 
+        error: `Access denied. Required user type: ${allowedTypes.join(' or ')}` 
+      });
+    }
+    next();
+  };
+};

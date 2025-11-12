@@ -1,5 +1,5 @@
 // backend/src/models/job.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const EXPERIENCE = ['Fresher', 'Junior', 'Mid', 'Senior'];
 const JOB_TYPES = ['Internship', 'Part-time', 'Full-time', 'Freelance'];
@@ -45,4 +45,4 @@ JobSchema.methods.scoreForUser = function (user) {
   };
 };
 
-module.exports = mongoose.model('Job', JobSchema);
+export const Job = mongoose.model('Job', JobSchema);

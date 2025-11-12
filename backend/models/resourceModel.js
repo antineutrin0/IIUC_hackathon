@@ -1,5 +1,5 @@
 // backend/src/models/resource.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const COST = ['Free', 'Paid', 'Mixed'];
 
@@ -19,4 +19,4 @@ const ResourceSchema = new mongoose.Schema({
 
 ResourceSchema.index({ title: 'text', platform: 'text', description: 'text' });
 
-module.exports = mongoose.model('Resource', ResourceSchema);
+export const Resource = mongoose.model('Resource', ResourceSchema);
