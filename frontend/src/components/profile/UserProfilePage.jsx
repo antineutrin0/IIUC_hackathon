@@ -125,7 +125,7 @@ const UserProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-green-50">
-      <div className="max-w-5xl mx-auto p-6">
+       <div className="max-w-5xl mx-auto p-6">
         {/* Profile Header */}
         <ProfileHeader
           profile={profile}

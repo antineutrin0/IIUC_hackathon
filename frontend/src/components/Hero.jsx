@@ -4,12 +4,12 @@ import { motion } from 'framer-motion'
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
 import { useNavigate } from 'react-router-dom'
-import { getData } from '@/context/userContext'
+import { useUserData } from '@/context/userContext'
 
 const Hero = () => {
-  const { user } = getData()
+  const { user } = useUserData()
   const navigate = useNavigate()
-
+   console.log("User in Hero component:", user);
   return (
     <div className="relative w-full md:h-[700px] h-screen bg-green-50 overflow-hidden">
       <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
@@ -93,7 +93,6 @@ const Hero = () => {
                 </Button>
               </motion.div>
             </motion.div>
-
             <motion.p
               className="text-sm text-green-800"
               initial={{ opacity: 0 }}

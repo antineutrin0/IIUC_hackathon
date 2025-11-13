@@ -5,6 +5,7 @@ export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+<<<<<<< HEAD
   const [loading, setLoading] = useState(true);
 
   // Load user from token on initial mount
@@ -47,3 +48,15 @@ export const UserProvider = ({ children }) => {
 };
 
 export const getData = () => useContext(UserContext);
+=======
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const useUserData = () => {
+  return useContext(UserContext);
+};
+>>>>>>> 10819885386911cd5c2591d2c5c8f2a6ff2aa582
