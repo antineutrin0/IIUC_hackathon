@@ -1,4 +1,4 @@
-import RecruiterDashboard from '@/components/RecruiterDashboard'
+import RecruiterDashboard from './RecruiterDashboard'
 import React from 'react'
 
 const Recruiter = () => {

@@ -6,15 +6,13 @@ import Login from './pages/Login'
 import VerifyEmail from './pages/VerifyEmail'
 import Verify from './pages/Verify'
 import Navbar from './components/Navbar'
-import ProtectedRoute from './components/ProtectedRoute'
 import ForgotPassword from './pages/ForgotPassword'
 import VerifyOTP from './pages/VerifyOTP'
 import ChangePassword from './pages/ChangePassword'
-import UserProfile from './pages/UserProfile'
 import JobBoardHome from './components/home/JobBoardHome'
 import ResourcePage from './components/resource/ResourcePage'
-import ResourceDetails from './components/resource/ResourceDetails'
 import UserProfilePage from './components/profile/UserProfilePage'
+import Recruiter from './components/recruiter/Recruiter'
 
 const router = createBrowserRouter([
   {
@@ -33,7 +31,10 @@ const router = createBrowserRouter([
     path:'/profile',
     element:<UserProfilePage></UserProfilePage>
   },
-
+  //  {
+  //   path: '/recruiter',
+  //   element: <Recruiter></Recruiter>,
+  // },
   {
     path: '/signup',
     element: <Signup />
@@ -67,10 +68,7 @@ const router = createBrowserRouter([
   //   element: <UserProfile />
   // }
   // ,
-  // {
-  //   path: '/recruiter',
-  //   element: <Recruiter />,
-  // }
+  
 ])
 
 const App = () => {

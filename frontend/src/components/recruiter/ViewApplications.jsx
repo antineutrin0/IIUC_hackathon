@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Download, MoreVertical } from 'lucide-react';
-import { mockAPI } from '../../lib/MockApi';
+import { mockAPI } from './jobMockApi';
+
 
 const ViewApplications = () => {
   const [applications, setApplications] = useState([]);
