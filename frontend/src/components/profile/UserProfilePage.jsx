@@ -33,11 +33,11 @@ const UserProfilePage = () => {
       if (userLoading) return;
 
       // Redirect to login if no user
-      // if (!user) {
-      //   toast.error('Please login to view your profile');
-      //   navigate('/login');
-      //   return;
-      // }
+      if (!user) {
+        toast.error('Please login to view your profile');
+        navigate('/login');
+        return;
+      }
 
       try {
         setLoading(true);
@@ -47,7 +47,6 @@ const UserProfilePage = () => {
           navigate('/login');
           return;
         }
-
         const res = await axios.get(`http://localhost:8000/user/profile`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -63,10 +62,10 @@ const UserProfilePage = () => {
         toast.error('Failed to load profile');
         
         // If unauthorized, redirect to login
-        if (error.response?.status === 401) {
-          localStorage.removeItem('accessToken');
-          navigate('/login');
-        }
+        // if (error.response?.status === 401) {
+        //   localStorage.removeItem('accessToken');
+        //   navigate('/login');
+        // }
       } finally {
         setLoading(false);
       }

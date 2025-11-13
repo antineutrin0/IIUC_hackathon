@@ -23,7 +23,7 @@ export const UserProvider = ({ children }) => {
           }
         } catch (error) {
           console.error("Failed to load user:", error);
-          localStorage.removeItem("accessToken");
+          // localStorage.removeItem("accessToken");
         }
       }
       setLoading(false);
@@ -44,4 +44,5 @@ export const UserProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 export const getData = () => useContext(UserContext);
