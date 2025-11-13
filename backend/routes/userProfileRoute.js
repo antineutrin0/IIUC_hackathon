@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', isAuthenticated, authorizeUserType('general'), async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate('profile');
-    
+
     if (!user.profile) {
       return res.status(404).json({ error: 'Profile not found' });
     }
@@ -24,7 +24,7 @@ router.get('/', isAuthenticated, authorizeUserType('general'), async (req, res) 
 router.post('/', isAuthenticated, authorizeUserType('general'), async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    
+
     if (user.profile) {
       return res.status(400).json({ error: 'Profile already exists' });
     }
@@ -44,7 +44,7 @@ router.post('/', isAuthenticated, authorizeUserType('general'), async (req, res)
     };
 
     const profile = await UserProfile.create(profileData);
-    
+
     user.profile = profile._id;
     user.profileModel = 'UserProfile';
     await user.save();
@@ -59,7 +59,7 @@ router.post('/', isAuthenticated, authorizeUserType('general'), async (req, res)
 router.put('/', isAuthenticated, authorizeUserType('general'), async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    
+
     if (!user.profile) {
       return res.status(404).json({ error: 'Profile not found. Create one first.' });
     }
@@ -95,13 +95,13 @@ router.put('/', isAuthenticated, authorizeUserType('general'), async (req, res) 
 router.post('/cv', isAuthenticated, authorizeUserType('general'), async (req, res) => {
   try {
     const { cvText } = req.body;
-    
+
     if (!cvText) {
       return res.status(400).json({ error: 'CV text is required' });
     }
 
     const user = await User.findById(req.user._id);
-    
+
     if (!user.profile) {
       return res.status(404).json({ error: 'Profile not found. Create one first.' });
     }

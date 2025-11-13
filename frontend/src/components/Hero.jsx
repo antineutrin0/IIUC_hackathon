@@ -53,10 +53,10 @@ const Hero = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
               >
-                Your career journey starts here — discover 
+                Your career journey starts here — discover
                 <span className="text-gray-800"> jobs </span>
-                 and <span className="text-gray-800"> unlock</span> opportunities.
-                
+                and <span className="text-gray-800"> unlock</span> opportunities.
+
               </motion.h1>
 
               <motion.p
@@ -65,7 +65,7 @@ const Hero = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
               >
-                Built to connect you with meaningful work, faster. 
+                Built to connect you with meaningful work, faster.
                 Find roles that match your skills, goals, and lifestyle.
               </motion.p>
             </motion.div>

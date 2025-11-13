@@ -1,5 +1,5 @@
 import React from 'react'
-import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Home from './pages/Home'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
@@ -10,46 +10,73 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ForgotPassword from './pages/ForgotPassword'
 import VerifyOTP from './pages/VerifyOTP'
 import ChangePassword from './pages/ChangePassword'
+import UserProfile from './pages/UserProfile'
+import JobBoardHome from './components/home/JobBoardHome'
+import ResourcePage from './components/resource/ResourcePage'
+import ResourceDetails from './components/resource/ResourceDetails'
+import UserProfilePage from './components/profile/UserProfilePage'
 
 const router = createBrowserRouter([
   {
-    path:'/',
-    element:<><Navbar/><Home/></>
+    path: '/',
+    element: <><Navbar /><Home /></>
   },
   {
-    path:'/signup',
-    element:<Signup/>
+   path:'/home',
+   element:<JobBoardHome></JobBoardHome>
   },
   {
-    path:'/verify',
-    element:<VerifyEmail/>
+    path: '/resources',
+    element:<ResourcePage></ResourcePage>,
   },
   {
-    path:'/verify/:token',
-    element:<Verify/>
+    path:'/profile',
+    element:<UserProfilePage></UserProfilePage>
+  },
+
+  {
+    path: '/signup',
+    element: <Signup />
   },
   {
-    path:'/login',
-    element:<Login/>
+    path: '/verify',
+    element: <VerifyEmail />
   },
   {
-    path:'/forgot-password',
-    element:<ForgotPassword/>
+    path: '/verify/:token',
+    element: <Verify />
   },
   {
-    path:'/verify-otp/:email',
-    element:<VerifyOTP/>
+    path: '/login',
+    element: <Login />
   },
   {
-    path:'/change-password/:email',
-    element:<ChangePassword/>
+    path: '/forgot-password',
+    element: <ForgotPassword />
   },
+  {
+    path: '/verify-otp/:email',
+    element: <VerifyOTP />
+  },
+  {
+    path: '/change-password/:email',
+    element: <ChangePassword />
+  }
+  // {
+  //   path: '/profile',
+  //   element: <UserProfile />
+  // }
+  // ,
+  // {
+  //   path: '/recruiter',
+  //   element: <Recruiter />,
+  // }
 ])
 
 const App = () => {
   return (
     <div>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </div>
   )
 }
