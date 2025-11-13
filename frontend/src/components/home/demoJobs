@@ -1,0 +1,121 @@
+const demoJobs = [
+  {
+    _id: '1',
+    title: 'Full Stack Developer',
+    company: 'TechCorp Solutions',
+    location: 'California',
+    requiredSkills: ['react', 'node.js', 'mongodb', 'typescript'],
+    recommendedExperience: 'Mid',
+    jobType: 'Full-time',
+    description: 'You will be responsible for frontend and backend development tasks. You will work closely with our design team to build scalable applications.',
+    track: 'Web Development',
+    tags: ['Remote', 'Health Insurance'],
+    createdAt: new Date('2025-11-10')
+  },
+  {
+    _id: '2',
+    title: 'Frontend Developer',
+    company: 'Digital Innovations',
+    location: 'Remote',
+    requiredSkills: ['react', 'javascript', 'css', 'html'],
+    recommendedExperience: 'Junior',
+    jobType: 'Full-time',
+    description: 'Join our team to create beautiful, responsive user interfaces. Experience with modern frameworks required.',
+    track: 'Web Development',
+    tags: ['Flexible Hours', 'Stock Options'],
+    createdAt: new Date('2025-11-11')
+  },
+  {
+    _id: '3',
+    title: 'Backend Developer',
+    company: 'CloudBase Inc',
+    location: 'Bangalore',
+    requiredSkills: ['python', 'django', 'postgresql', 'aws'],
+    recommendedExperience: 'Senior',
+    jobType: 'Full-time',
+    description: 'Work on scalable backend systems and APIs. Strong experience with cloud infrastructure needed.',
+    track: 'Backend Development',
+    tags: ['On-site', 'Career Growth'],
+    createdAt: new Date('2025-11-09')
+  },
+  {
+    _id: '4',
+    title: 'Data Scientist',
+    company: 'AI Labs',
+    location: 'Hyderabad',
+    requiredSkills: ['python', 'machine learning', 'tensorflow', 'pandas'],
+    recommendedExperience: 'Mid',
+    jobType: 'Full-time',
+    description: 'Analyze complex datasets and build ML models. PhD preferred but not required.',
+    track: 'Data Science',
+    tags: ['Hybrid', 'Research'],
+    createdAt: new Date('2025-11-12')
+  },
+  {
+    _id: '5',
+    title: 'UI/UX Designer',
+    company: 'Creative Studio',
+    location: 'Mumbai',
+    requiredSkills: ['figma', 'adobe xd', 'prototyping', 'user research'],
+    recommendedExperience: 'Junior',
+    jobType: 'Full-time',
+    description: 'Design intuitive interfaces and conduct user research. Portfolio required.',
+    track: 'Design',
+    tags: ['Creative', 'Collaborative'],
+    createdAt: new Date('2025-11-08')
+  },
+  {
+    _id: '6',
+    title: 'Mobile App Developer',
+    company: 'AppWorks',
+    location: 'Chennai',
+    requiredSkills: ['react native', 'ios', 'android', 'firebase'],
+    recommendedExperience: 'Mid',
+    jobType: 'Full-time',
+    description: 'Build cross-platform mobile applications. Experience with both iOS and Android required.',
+    track: 'Mobile Development',
+    tags: ['Startup', 'Fast-paced'],
+    createdAt: new Date('2025-11-13')
+  },
+  {
+    _id: '7',
+    title: 'DevOps Engineer',
+    company: 'Infrastructure Pro',
+    location: 'Pune',
+    requiredSkills: ['docker', 'kubernetes', 'jenkins', 'aws'],
+    recommendedExperience: 'Senior',
+    jobType: 'Full-time',
+    description: 'Manage CI/CD pipelines and cloud infrastructure. Strong automation skills needed.',
+    track: 'DevOps',
+    tags: ['Technical', 'Leadership'],
+    createdAt: new Date('2025-11-07')
+  },
+  {
+    _id: '8',
+    title: 'Junior Web Developer',
+    company: 'StartUp Hub',
+    location: 'Remote',
+    requiredSkills: ['html', 'css', 'javascript', 'git'],
+    recommendedExperience: 'Fresher',
+    jobType: 'Internship',
+    description: 'Learn and grow with our team. Perfect for recent graduates looking to start their career.',
+    track: 'Web Development',
+    tags: ['Learning', 'Mentorship'],
+    createdAt: new Date('2025-11-13')
+  },
+  {
+    _id: '9',
+    title: 'Product Manager',
+    company: 'Product Labs',
+    location: 'Delhi',
+    requiredSkills: ['product strategy', 'agile', 'analytics', 'stakeholder management'],
+    recommendedExperience: 'Senior',
+    jobType: 'Full-time',
+    description: 'Lead product development from ideation to launch. Strong technical background preferred.',
+    track: 'Product Management',
+    tags: ['Leadership', 'Strategic'],
+    createdAt: new Date('2025-11-06')
+  }
+];
+
+export { demoJobs };
