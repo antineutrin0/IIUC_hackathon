@@ -9,6 +9,7 @@ import courseProviderRoute from "./routes/courseProviderRoute.js"
 import jobRoute from "./routes/jobRoute.js"
 import resourceRoute from "./routes/resourceRoute.js"
 import testroute from "./routes/test.js"
+import geminiRoute from "./apiIntegration/gemini.js";
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.use('/course-provider', courseProviderRoute);
 app.use('/jobs', jobRoute);
 app.use('resource',resourceRoute);
 app.use('/test',testroute);
+app.use("/api/gemini", geminiRoute);
 // http://localhost:8000/user/register
 
 
