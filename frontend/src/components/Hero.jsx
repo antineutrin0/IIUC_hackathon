@@ -4,10 +4,10 @@ import { motion } from 'framer-motion'
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
 import { useNavigate } from 'react-router-dom'
-import { useUserData } from '@/context/userContext'
+import { getData } from '@/context/userContext'
 
 const Hero = () => {
-  const { user } = useUserData()
+  const { user } = getData()
   const navigate = useNavigate()
    console.log("User in Hero component:", user);
   return (

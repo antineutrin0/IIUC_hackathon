@@ -25,19 +25,18 @@ recruiterRouter.get('/dashboard', isAuthenticated, authorizeUserType('recruiter'
 });
 
 // POST /api/recruiter/profile - Create recruiter profile
-recruiterRouter.post('/dashboard', isAuthenticated, authorizeUserType('recruiter'), async (req, res) => {
+recruiterRouter.post('/dashboard', async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    
     if (user.profile) {
       return res.status(400).json({ error: 'Recruiter profile already exists' });
     }
 
     const { companyName, companyWebsite, companyLogo, dashboardNotes } = req.body;
 
-    if (!companyName) {
-      return res.status(400).json({ error: 'Company name is required' });
-    }
+    // if (!companyName) {
+    //   return res.status(400).json({ error: 'Company name is required' });
+    // }
 
     const profile = await RecruiterInfo.create({
       user: user._id,
@@ -46,6 +45,8 @@ recruiterRouter.post('/dashboard', isAuthenticated, authorizeUserType('recruiter
       companyLogo: companyLogo || '',
       dashboardNotes: dashboardNotes || '',
     });
+
+    console.log("Created recruiter profile:", profile);
 
     user.profile = profile._id;
     user.profileModel = 'RecruiterProfile';

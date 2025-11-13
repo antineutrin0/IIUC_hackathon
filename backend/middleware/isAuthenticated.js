@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import { User } from '../models/userModel.js';
 
 export const isAuthenticated = async(req, res, next) =>{
+
     try {
         const authHeader = req.headers.authorization;
 
@@ -28,7 +29,7 @@ export const isAuthenticated = async(req, res, next) =>{
                 })
             }
             const {id} = decoded;
-
+            
             const user = await User.findById(id)
             if(!user){
                 return res.status(404).json({
@@ -36,8 +37,7 @@ export const isAuthenticated = async(req, res, next) =>{
                     message:"user not found"
                 })
             }
-            
-            req.user = user
+           
             req.userId = user._id  
             next()
         })

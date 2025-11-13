@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 const Verify = () => {
     const {token} = useParams()
+    console.log("Verification token:", token);
     const [status, setStatus] = useState("Verifying...")
     const navigate = useNavigate()
 
@@ -25,7 +26,7 @@ const Verify = () => {
                 }
             } catch (error) {
                 console.log(error);
-                setStatus("❌ Verification Failed.Please try again")
+                setStatus("❌ Verification Failed.Please try again");
                 
             }
         };

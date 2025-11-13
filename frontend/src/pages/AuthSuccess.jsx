@@ -1,10 +1,10 @@
-import { useUserData } from '@/context/userContext'
+import { getData } from '@/context/userContext'
 import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const AuthSuccess = () => {
-    const { setUser } = useUserData()
+    const { setUser } = getData()
     const navigate = useNavigate()
     useEffect(() => {
 

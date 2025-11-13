@@ -46,10 +46,10 @@ export const registerUser = async (req, res) => {
 }
 
 export const verification = async (req, res) => {
+    
     try {
         const authHeader = req.headers.authorization;
-        const {varifyToken}=req.params;
-        console.log(varifyToken);
+        console.log(" token", authHeader);
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return res.status(401).json({
                 success: false,
@@ -73,18 +73,14 @@ export const verification = async (req, res) => {
                 message: "Token verification failed"
             })
         }
+
+     
         const user = await User.findById(decoded.id)
         if (!user) {
             return res.status(404).json({
                 success: false,
                 message: "User not found"
             })
-        }
-        if(user.token!==varifyToken){
-         return res.status(400).json({
-            success: false,
-            message: "token is not correct"
-        })
         }
         user.token = null
         user.isVerified = true

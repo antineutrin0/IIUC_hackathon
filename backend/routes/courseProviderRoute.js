@@ -6,7 +6,6 @@ import { isAuthenticated, authorizeUserType } from '../middleware/isAuthenticate
 
 const courseProviderRoute = express.Router();
 
-// GET /api/resource/profile - Get resource sharer dashboard
 courseProviderRoute.get('/profile', isAuthenticated, authorizeUserType('course_provider'), async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate({
@@ -25,25 +24,22 @@ courseProviderRoute.get('/profile', isAuthenticated, authorizeUserType('course_p
 });
 
 // POST /api/resource/profile - Create resource sharer profile
-courseProviderRoute.post('/profile', isAuthenticated, authorizeUserType('course_provider'), async (req, res) => {
+courseProviderRoute.post('/profile', async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    console.log("Creating course provider profile");
+    //  const user = await User.findById(req.user._id);
     
-    if (user.profile) {
-      return res.status(400).json({ error: 'Resource sharer profile already exists' });
-    }
+    // if (user.profile) {
+    //   return res.status(400).json({ error: 'Resource sharer profile already exists' });
+    // }
 
     const { bio, dashboardNotes } = req.body;
 
     const profile = await CourseProvider.create({
-      user: user._id,
+      user: "69161ace3a9f55a0ca04b238",
       bio: bio || '',
       dashboardNotes: dashboardNotes || '',
     });
-
-    user.profile = profile._id;
-    user.profileModel = 'ResourceProfile';
-    await user.save();
 
     res.status(201).json({ success: true, profile });
   } catch (error) {

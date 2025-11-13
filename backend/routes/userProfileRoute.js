@@ -5,16 +5,30 @@ import { isAuthenticated, authorizeUserType } from '../middleware/isAuthenticate
 
 const router = express.Router();
 
+router.get('/me', isAuthenticated, authorizeUserType('general'), async (req, res) => {
+  if(!req.user){
+    return res.status(401).json({
+      success:false,
+      message:"User not authenticated"
+    })
+  }
+  return res.status(200).json({
+    success:true,
+    user:req.user
+  })
+} );
+
 // GET /api/profile - Get logged-in user profile
 router.get('/', isAuthenticated, authorizeUserType('general'), async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id).populate('profile');
 
-    if (!user.profile) {
+  console.log("Fetching profile for user:", req.user._id);
+  try {
+    const userProfile = await User.findOne({user: req.user._id});
+    
+    if (!userProfile) {
       return res.status(404).json({ error: 'Profile not found' });
     }
-
-    res.json({ success: true, profile: user.profile });
+    res.json({ success: true, profile: userProfile });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch profile', details: error.message });
   }
@@ -30,6 +44,7 @@ router.post('/', isAuthenticated, authorizeUserType('general'), async (req, res)
     }
 
     const profileData = {
+      user: user._id,
       skills: req.body.skills || [],
       projects: req.body.projects || [],
       education: req.body.education || [],

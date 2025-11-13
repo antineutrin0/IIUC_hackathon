@@ -14,12 +14,17 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const UserProfilePage = () => {
+
   const { user, loading: userLoading } = getData();
+  console.log(user);
+  console.log("token from storage",localStorage.getItem('accessToken'));
   const navigate = useNavigate();
   const [profile, setProfile] = useState(demoProfile);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+ 
 
   // Fetch user profile from backend
   useEffect(() => {
@@ -28,16 +33,16 @@ const UserProfilePage = () => {
       if (userLoading) return;
 
       // Redirect to login if no user
-      if (!user) {
-        toast.error('Please login to view your profile');
-        navigate('/login');
-        return;
-      }
+      // if (!user) {
+      //   toast.error('Please login to view your profile');
+      //   navigate('/login');
+      //   return;
+      // }
 
       try {
         setLoading(true);
         const token = localStorage.getItem('accessToken');
-        
+        console.log("Fetched token:", token);
         if (!token) {
           navigate('/login');
           return;

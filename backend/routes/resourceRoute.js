@@ -5,6 +5,38 @@ import { isAuthenticated } from '../middleware/isAuthenticated.js';
 
 const resourceRoute = express.Router();
 
+resourceRoute.post('/', isAuthenticated, async (req, res) => {
+  try {
+    const { title, platform, url, relatedSkills, cost, description } = req.body;
+
+    if (!title || !url) {
+      return res.status(400).json({ error: 'Title and URL are required.' });
+    }
+
+    const newResource = new Resource({
+      title,
+      platform,
+      url,
+      relatedSkills,
+      cost,
+      description,
+      createdBy: req.user._id || 'admin', // ✅ the logged-in user
+    });
+    
+    const CourseProvider=await User.findById(req.user._id).populate('courseProvider');
+    if (CourseProvider && CourseProvider.courseProvider) {
+      CourseProvider.uploadedResources.push(newResource._id);
+      await CourseProvider.courseProvider.save();
+    }
+    
+    const saved = await newResource.save();
+    res.status(201).json({ success: true, resource: saved });
+
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create resource', details: error.message });
+  }
+});
+
 // GET /api/resources - List all resources with filters
 resourceRoute.get('/', async (req, res) => {
   try {

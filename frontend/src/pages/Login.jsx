@@ -14,11 +14,11 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { useUserData } from '@/context/userContext'
+import { getData } from '@/context/userContext'
 import Google from "../assets/googleLogo.png"
 
 const Login = () => {
-    const {setUser} = useUserData()
+    const {setUser} = getData()
     const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -46,10 +46,11 @@ const Login = () => {
                 }
             })
             if (res.data.success) {
-                navigate('/')
                 setUser(res.data.user)
                 localStorage.setItem("accessToken", res.data.accessToken)
+                 console.log("toke from localstorage",localStorage.getItem('accessToken'));
                 toast.success(res.data.message)
+                navigate('/')
             }
         } catch (error) {
             console.log(error);
