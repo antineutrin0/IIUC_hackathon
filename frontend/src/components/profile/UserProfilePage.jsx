@@ -1,27 +1,55 @@
-import { useState } from 'react';
-import ProfileHeader from './ProfileHeader';
-import ProjectsSection from './ProjectSection';
-import EducationSection from './EducationSection';
-import SkillsSection from './SkillsSection';
-import LanguagesSection from './LanguagesSection';
-import EditProfileModal from './EditProfileModel';
-import { FileText } from 'lucide-react';
-import React from 'react';
-import demoProfile from './demoProfile';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import ProfileHeader from "./ProfileHeader";
+import ProjectsSection from "./ProjectSection";
+import EducationSection from "./EducationSection";
+import SkillsSection from "./SkillsSection";
+import LanguagesSection from "./LanguagesSection";
+import EditProfileModal from "./EditProfileModel";
+import { FileText } from "lucide-react";
+import demoProfile from "./demoProfile";
+import { useUserData } from "@/context/userContext";
 
 const UserProfilePage = () => {
-  const [profile, setProfile] = useState(demoProfile);
+  const { user, setUser } = useUserData(); 
+  const [profile, setProfile] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+ console.log("User in UserProfilePage:", user);
+  const fetchUserProfile = async (user) => {
+    try {
+      const response = await axios.post("http://localhost:8000/user/profile", { user });
+      console.log("User profile:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      if (user) {
+        const userProfile = await fetchUserProfile(user);
+        if (userProfile) setProfile(userProfile);
+      }
+      setIsLoading(false);
+    };
+    loadUserProfile();
+  }, [user]); // re-run when user changes
 
   const handleSaveProfile = (updatedData) => {
-    setProfile({ ...profile, ...updatedData });
-    // In real app: API call to update profile
-    console.log('Profile updated:', updatedData);
+    setProfile((prev) => ({ ...prev, ...updatedData }));
+    console.log("Profile updated:", updatedData);
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-green-50">
-      <div className="max-w-5xl mx-auto p-6">
+       <div className="max-w-5xl mx-auto p-6">
         {/* Profile Header */}
         <ProfileHeader
           profile={profile}
