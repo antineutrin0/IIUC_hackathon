@@ -1,7 +1,9 @@
 import { Briefcase, Clock, TrendingUp } from 'lucide-react';
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 
 const JobCard = ({ job, onClick }) => {
+  const navigate = useNavigate();
   const getTimeAgo = (date) => {
     const days = Math.floor((new Date() - new Date(date)) / (1000 * 60 * 60 * 24));
     if (days === 0) return 'Today';
@@ -19,7 +21,7 @@ const JobCard = ({ job, onClick }) => {
         className="absolute top-5 right-5 flex items-center gap-1 text-gray-600 text-1xl hover:text-green-700 hover:underline transition-colors"
         onClick={(e) => {
           e.stopPropagation();
-          console.log('Navigate button clicked');
+          navigate('/cmp');
         }}
       >
         <TrendingUp size={16} /> Compare & Improve
