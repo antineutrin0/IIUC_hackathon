@@ -14,30 +14,30 @@ import ResourcePage from "./components/resource/ResourcePage";
 import UserProfilePage from "./components/profile/UserProfilePage";
 import Recruiter from "./components/recruiter/Recruiter";
 import RoadmapDashboard from "./pages/RoadmapDashboard";
-import CVJobComparison from './components/home/JobCompare'
-import AppLayout from './layout/AppLayout'
-import ProtectedRoute from './components/ProtectedRoute'
+import CVJobComparison from "./components/home/JobCompare";
+import AppLayout from "./layout/AppLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
- {
-   element: <AppLayout />,   // <-- Wrap everything with layout
+  {
+    element: <AppLayout />, // <-- Wrap everything with layout
     children: [
       {
         path: "/",
         element: (
-      <>
-        <Navbar />
-        <Home />
-      </>
+          <>
+            <Navbar />
+            <Home />
+          </>
         ),
-  },
+      },
       {
-         path: "/home",
-         element: <JobBoardHome />,
+        path: "/home",
+        element: <JobBoardHome />,
       },
       {
         path: "/resources",
-        element: <ResourcePage />
+        element: <ResourcePage />,
       },
       {
         path: "/user/profile",
@@ -70,17 +70,18 @@ const router = createBrowserRouter([
       {
         path: "/change-password/:email",
         element: <ChangePassword />,
-      },,
-  { 
-    path: "/roadmap", 
-    element: <RoadmapDashboard /> 
-  },
-      {
-        path: '/cmp',
-        element: <CVJobComparison />
       },
-    ]
- }
+      ,
+      {
+        path: "/roadmap",
+        element: <RoadmapDashboard />,
+      },
+      {
+        path: "/cmp",
+        element: <CVJobComparison />,
+      },
+    ],
+  },
 ]);
 
 const App = () => {
