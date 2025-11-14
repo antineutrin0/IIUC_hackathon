@@ -105,6 +105,22 @@ router.put('/', isAuthenticated, authorizeUserType('general'), async (req, res) 
   }
 });
 
+router.put('/addjobs', isAuthenticated, authorizeUserType('general'), async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+     const userProfile = await UserProfile.findOne({ user: user._id });  
+     const jobId = req.body.jobId;
+     userProfile.appliedJobs.push(jobId);
+    if (userProfile===null) {
+      return res.status(404).json({ error: 'Profile not found. Create one first.' });
+    }
+   userProfile.save();
+    res.json({ success: true, profile });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update profile', details: error.message });
+  }
+});
+
 // POST /api/profile/cv - Upload/save CV text
 router.post('/cv', isAuthenticated, authorizeUserType('general'), async (req, res) => {
   try {

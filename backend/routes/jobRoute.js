@@ -1,7 +1,8 @@
 import express from 'express';
 import { Job } from '../models/jobModel.js';
 import { User } from '../models/userModel.js';
-import { isAuthenticated } from '../middleware/isAuthenticated.js';
+import { authorizeUserType, isAuthenticated } from '../middleware/isAuthenticated.js';
+import { UserProfile } from '../models/userProfile.js';
 
 const jobRoute = express.Router();
 
@@ -45,23 +46,39 @@ jobRoute.get('/', async (req, res) => {
 jobRoute.get('/:id', async (req, res) => {
   try {
     const job = await Job.findById(req.params.id);
-    
+    console.log("Fetched job:", job);
     if (!job) {
       return res.status(404).json({ error: 'Job not found' });
     }
-
     res.json({ success: true, job });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch job', details: error.message });
   }
 });
 
+jobRoute.put('/addjob', isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+     const userProfile = await UserProfile.findOne({ user: user._id });  
+     const {jobId} = req.body;
+     console.log("form router",jobId,userProfile);
+     userProfile.appliedJobs.push(jobId);
+    if (userProfile===null) {
+      return res.status(404).json({ error: 'Profile not found. Create one first.' });
+    }
+    await userProfile.save();
+    res.json({ success: true, profile });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update profile', details: error.message });
+  }
+});
+
 // GET /api/jobs/recommend - Recommend jobs for logged-in user
 jobRoute.get('/recommend', isAuthenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).populate('profile');
-    
-    if (!user.profile) {
+    const user = await User.findById(req.user._id);
+    const userProfile = await UserProfile.findOne({ user: user._id });
+    if (!userProfile) {
       return res.status(400).json({ error: 'User profile not found. Create a profile first.' });
     }
 

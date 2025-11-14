@@ -63,6 +63,11 @@ const UserProfileSchema = new Schema({
     default: 'open_to_work',
   },
   lastProfileUpdateAt: { type: Date, default: Date.now },
+  appliedJobs: [{
+  type: Schema.Types.ObjectId,
+  ref: 'Job'
+}]
+
 }, { timestamps: true });
 
 export const UserProfile = mongoose.model('UserProfile', UserProfileSchema);

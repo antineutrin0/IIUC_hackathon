@@ -127,11 +127,6 @@ const JobBoardHome = () => {
     setCurrentPage(selected);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
-  if (selectedJob) {
-    return <JobDetailsPage job={selectedJob} onBack={() => setSelectedJob(null)} />;
-  }
-
   return (
     <div className="min-h-screen bg-green-50">
       <SearchSection onSearch={setSearchParams} />
@@ -167,7 +162,7 @@ const JobBoardHome = () => {
                 )}
 
                 {jobs.map((job) => (
-                  <JobCard key={job._id} job={job} onClick={setSelectedJob} />
+                  <JobCard key={job._id} job={job} />
                 ))}
               </div>
             )}
