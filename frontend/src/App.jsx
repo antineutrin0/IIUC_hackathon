@@ -13,6 +13,7 @@ import JobBoardHome from './components/home/JobBoardHome'
 import ResourcePage from './components/resource/ResourcePage'
 import UserProfilePage from './components/profile/UserProfilePage'
 import Recruiter from './components/recruiter/Recruiter'
+import CVJobComparison from './components/home/JobCompare'
 
 const router = createBrowserRouter([
   {
@@ -62,12 +63,12 @@ const router = createBrowserRouter([
   {
     path: '/change-password/:email',
     element: <ChangePassword />
+  },
+  {
+    path: '/cmp',
+    element: <CVJobComparison />
   }
-  // {
-  //   path: '/profile',
-  //   element: <UserProfile />
-  // }
-  // ,
+  ,
   
 ])
 

@@ -4,7 +4,7 @@ import JobCard from "./JobCard";
 import JobDetailsPage from "./JobDetails";
 import SearchSection from "./SearchSection";
 import FilterSidebar from "./FilterSidebar";
-import { demoJobs } from "./demoJobs"; // adjust path as needed
+import { demoJobs } from "./demoJobs.js"; // adjust path as needed
 
 const JobBoardHome = () => {
   const [jobs, setJobs] = useState(demoJobs);
