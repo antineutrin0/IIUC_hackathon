@@ -17,65 +17,68 @@ import RoadmapDashboard from "./pages/RoadmapDashboard";
 import CVJobComparison from "./components/home/JobCompare";
 import AppLayout from "./layout/AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ChatbotPage from './components/common/ChatbotPage'
+import ChatbotPage from './components/common/ChatbotPage';
+import ChatbotButton from "./components/common/ChatbotButton";
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <><Navbar /><Home /></>
-  },  
-  {
-   path:'/home',
-   element:<ProtectedRoute><Navbar /><JobBoardHome></JobBoardHome></ProtectedRoute>
-  },
-  {
-    path: '/resources',
-    element:<ProtectedRoute><Navbar /><ResourcePage></ResourcePage></ProtectedRoute>
-  },
-  {
-    path:'/user/profile',
-    element:<ProtectedRoute><Navbar /><UserProfilePage></UserProfilePage></ProtectedRoute>
-  },
-   {
-    path: '/recruiter',
-    element: <Recruiter></Recruiter>,
-  },
-  {
-    path: '/signup',
-    element: <Signup />
-  },
-  {
-    path: '/verify',
-    element: <VerifyEmail />
-  },
-  {
-    path: '/verify/:token',
-    element: <Verify />
-  },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/forgot-password',
-    element: <ForgotPassword />
-  },
-  {
-    path: '/verify-otp/:email',
-    element: <VerifyOTP />
-  },
-  {
-    path: '/change-password/:email',
-    element: <ChangePassword />
-  },
-  {
-    path: '/cmp',
-    element: <CVJobComparison />
+    element: <AppLayout />,   // <-- Wrap everything with layout
+    children: [
+      {
+        path: '/',
+        element: <><Navbar /><Home /></>
+      },
+      {
+        path:'/home',
+        element:<JobBoardHome />
+      },
+      {
+        path: '/resources',
+        element:<ResourcePage />
+      },
+      {
+        path:'/user/profile',
+        element:<UserProfilePage />
+      },
+      {
+        path: '/signup',
+        element: <Signup />
+      },
+      {
+        path: '/verify',
+        element: <VerifyEmail />
+      },
+      {
+        path: '/verify/:token',
+        element: <Verify />
+      },
+      {
+        path: '/login',
+        element: <Login />
+      },
+      {
+        path: '/forgot-password',
+        element: <ForgotPassword />
+      },
+      {
+        path: '/verify-otp/:email',
+        element: <VerifyOTP />
+      },
+      {
+        path: '/change-password/:email',
+        element: <ChangePassword />
+      },
+      {
+        path:'/chatpage',
+        element:<ChatbotPage />
+      },
+      {
+        path: '/cmp',
+        element: <CVJobComparison />
+      }
+    ]
   }
-  ,
-  
-])
-
+]);
 const App = () => {
   return (
     <div>
