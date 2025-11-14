@@ -7,17 +7,15 @@ const RoadmapPopup = () => {
 
   const [isOpen, setIsOpen] = useState(true);
   const [targetRole, setTargetRole] = useState('');
-  const [timeframe, setTimeframe] = useState('3');
+  const [timeframe, setTimeframe] = useState('');
 
   const handleCreateRoadmap = () => {
-    if (targetRole.trim()) {
-      alert(`Creating roadmap for ${targetRole} with ${timeframe} months timeframe`);
-      navigate("/home"); // redirect after creating roadmap
-    } else {
-      alert('Please enter a target role');
-    }
-  };
-
+  if (targetRole.trim()) {
+    navigate(`/career-roadmap?targetJob=${encodeURIComponent(targetRole)}&timeframe=${encodeURIComponent(timeframe +" months")}`);
+  } else {
+    alert('Please enter a target role');
+  }
+};
   const handleClose = () => {
     // 👇 Redirect to / instead of just closing
     navigate("/");

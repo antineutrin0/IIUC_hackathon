@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { useSearchParams } from "react-router-dom";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,22 +19,26 @@ export default function CareerRoadmapPage() {
   const [loading, setLoading] = useState(false);
   const [roadmap, setRoadmap] = useState(null);
 
-  const [targetJob, setTargetJob] = useState("Frontend Developer");
-  const [timeframe, setTimeframe] = useState("6 months");
+  // Read data sent from popup:
+  const [searchParams] = useSearchParams();
+  const targetJob = searchParams.get("targetJob");
+  const timeframe = searchParams.get("timeframe");
+
+  console.log("Roadmap params:", { targetJob, timeframe });
 
   const token = localStorage.getItem("accessToken");
 
   const fetchRoadmap = async () => {
+    if (!targetJob || !timeframe) return; // Prevent invalid request
+
     setLoading(true);
     try {
-        
-        console.log("API Request Payload:");
       const res = await axios.post(
         "http://localhost:8000/career-roadmap/",
         { targetJob, timeframe },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("API Response:", res.data);
+
       setRoadmap(res.data);
     } catch (err) {
       console.error("Failed to fetch roadmap:", err);
@@ -34,9 +46,19 @@ export default function CareerRoadmapPage() {
     setLoading(false);
   };
 
+  // Fetch roadmap when URL params arrive
   useEffect(() => {
     fetchRoadmap();
-  }, []);
+  }, [targetJob, timeframe]);
+
+  // If missing params → show error
+  if (!targetJob || !timeframe) {
+    return (
+      <div className="h-screen flex items-center justify-center text-red-600 text-xl">
+        Missing roadmap parameters. Please go back and create a roadmap.
+      </div>
+    );
+  }
 
   if (loading || !roadmap) {
     return (
@@ -54,17 +76,17 @@ export default function CareerRoadmapPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-8">
-      {/* HEADER */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <h1 className="text-3xl font-bold">
-          Career Roadmap → <span className="text-blue-600">{roadmap.jobTitle}</span>
+          Career Roadmap →
+          <span className="text-blue-600"> {roadmap.jobTitle}</span>
         </h1>
         <p className="text-gray-600 mt-1">
           Timeline: {roadmap.totalDurationWeeks} weeks
         </p>
       </motion.div>
 
-      {/* OVERVIEW SECTION */}
+      {/* OVERVIEW */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -111,7 +133,7 @@ export default function CareerRoadmapPage() {
         </CardContent>
       </Card>
 
-      {/* PHASES SECTION */}
+      {/* PHASES */}
       <div className="space-y-6">
         <h2 className="text-2xl font-semibold">Roadmap Phases</h2>
         {roadmap.phases.map((phase, index) => (
@@ -166,8 +188,11 @@ export default function CareerRoadmapPage() {
                   <strong>Expected Outcome:</strong> {phase.expectedOutcome}
                 </p>
 
-                {/* QUIZ PLACEHOLDER */}
-                <Button variant="outline" disabled className="opacity-60 cursor-not-allowed">
+                <Button
+                  variant="outline"
+                  disabled
+                  className="opacity-60 cursor-not-allowed"
+                >
                   Quiz Coming Soon
                 </Button>
               </CardContent>
@@ -184,7 +209,10 @@ export default function CareerRoadmapPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p>Recommended start week: {roadmap.applicationGuidance.recommendedStartWeek}</p>
+          <p>
+            Recommended start week:{" "}
+            {roadmap.applicationGuidance.recommendedStartWeek}
+          </p>
 
           <div>
             <h3 className="font-medium">What to Have Ready</h3>
@@ -215,11 +243,13 @@ export default function CareerRoadmapPage() {
           <div>
             <h3 className="font-medium">Learning Resources</h3>
             <ul className="list-disc pl-6">
-              {roadmap.extraRecommendations.learningResources.map((r, idx) => (
-                <li key={idx}>
-                  {r.title} ({r.type}) – {r.platform}
-                </li>
-              ))}
+              {roadmap.extraRecommendations.learningResources.map(
+                (r, idx) => (
+                  <li key={idx}>
+                    {r.title} ({r.type}) – {r.platform}
+                  </li>
+                )
+              )}
             </ul>
           </div>
 

@@ -62,6 +62,7 @@ careerRoadmap.post("/", isAuthenticated, async (req, res) => {
   try {
     const userId = req.user._id;
     const { targetJob, timeframe } = req.body;
+    console.log("Request data:", { userId, targetJob, timeframe });
 
     if (!userId || !targetJob) {
         console.log("Missing userId or targetJob");
