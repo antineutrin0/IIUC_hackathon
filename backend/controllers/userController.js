@@ -27,7 +27,7 @@ export const registerUser = async (req, res) => {
             email,
             password: hashedPassword
         })
-        const token = jwt.sign({ id: newUser._id }, process.env.SECRET_KEY, { expiresIn: "10h" })
+        const token = jwt.sign({ id: newUser._id }, process.env.SECRET_KEY, { expiresIn: "10m" })
         verifyMail(token, email)
         newUser.token = token
         await newUser.save()
@@ -46,16 +46,15 @@ export const registerUser = async (req, res) => {
 }
 
 export const verification = async (req, res) => {
-    
     try {
         const authHeader = req.headers.authorization;
-        console.log(" token", authHeader);
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return res.status(401).json({
                 success: false,
                 message: "Authorization token is missing or invalid"
             })
         }
+
         const token = authHeader.split(" ")[1]
 
         let decoded;
@@ -73,8 +72,6 @@ export const verification = async (req, res) => {
                 message: "Token verification failed"
             })
         }
-
-     
         const user = await User.findById(decoded.id)
         if (!user) {
             return res.status(404).json({
@@ -85,7 +82,6 @@ export const verification = async (req, res) => {
         user.token = null
         user.isVerified = true
         await user.save()
-
         return res.status(200).json({
             success: true,
             message: "Email verified successfully"

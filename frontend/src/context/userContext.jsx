@@ -9,8 +9,9 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const loadUser = async () => {
-      const token = localStorage.getItem("accessToken");
 
+      const token = localStorage.getItem("accessToken");
+       console.log("token from loaduser",token);
       if (token) {
         try {
           const res = await axios.get(`http://localhost:8000/user/profile/me`, {
@@ -18,7 +19,7 @@ export const UserProvider = ({ children }) => {
               Authorization: `Bearer ${token}`
             }
           });
-          if (res.data.success) {
+          if (res.data.user) {
             setUser(res.data.user);
           }
         } catch (error) {
