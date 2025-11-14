@@ -1,20 +1,22 @@
-import React from 'react'
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Home from './pages/Home'
-import Signup from './pages/Signup'
-import Login from './pages/Login'
-import VerifyEmail from './pages/VerifyEmail'
-import Verify from './pages/Verify'
-import Navbar from './components/Navbar'
-import ForgotPassword from './pages/ForgotPassword'
-import VerifyOTP from './pages/VerifyOTP'
-import ChangePassword from './pages/ChangePassword'
-import JobBoardHome from './components/home/JobBoardHome'
-import ResourcePage from './components/resource/ResourcePage'
-import UserProfilePage from './components/profile/UserProfilePage'
-import Recruiter from './components/recruiter/Recruiter'
-import CVJobComparison from './components/home/JobCompare'
-import ProtectedRoute from './components/ProtectedRoute'
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./pages/Home";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import VerifyEmail from "./pages/VerifyEmail";
+import Verify from "./pages/Verify";
+import Navbar from "./components/Navbar";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOTP from "./pages/VerifyOTP";
+import ChangePassword from "./pages/ChangePassword";
+import JobBoardHome from "./components/home/JobBoardHome";
+import ResourcePage from "./components/resource/ResourcePage";
+import UserProfilePage from "./components/profile/UserProfilePage";
+import Recruiter from "./components/recruiter/Recruiter";
+import RoadmapDashboard from "./pages/RoadmapDashboard";
+import CVJobComparison from "./components/home/JobCompare";
+import AppLayout from "./layout/AppLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -78,7 +80,7 @@ const App = () => {
     <div>
       <RouterProvider router={router} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
