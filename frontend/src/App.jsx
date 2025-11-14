@@ -14,62 +14,62 @@ import ResourcePage from './components/resource/ResourcePage'
 import UserProfilePage from './components/profile/UserProfilePage'
 import Recruiter from './components/recruiter/Recruiter'
 import CVJobComparison from './components/home/JobCompare'
-import ScrollToTop from './lib/ScrollToTop'
+import AppLayout from './layout/AppLayout'
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <><Navbar /><Home /></>
-  },
-  {
-   path:'/home',
-   element:<JobBoardHome></JobBoardHome>
-  },
-  {
-    path: '/resources',
-    element:<ResourcePage></ResourcePage>,
-  },
-  {
-    path:'/user/profile',
-    element:<UserProfilePage></UserProfilePage>
-  },
-  //  {
-  //   path: '/recruiter',
-  //   element: <Recruiter></Recruiter>,
-  // },
-  {
-    path: '/signup',
-    element: <Signup />
-  },
-  {
-    path: '/verify',
-    element: <VerifyEmail />
-  },
-  {
-    path: '/verify/:token',
-    element: <Verify />
-  },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/forgot-password',
-    element: <ForgotPassword />
-  },
-  {
-    path: '/verify-otp/:email',
-    element: <VerifyOTP />
-  },
-  {
-    path: '/change-password/:email',
-    element: <ChangePassword />
-  },
-  {
-    path: '/cmp',
-    element: <CVJobComparison />
-  }
-  ,
+ {
+   element: <AppLayout />,   // <-- Wrap everything with layout
+    children: [
+      {
+        path: '/',
+        element: <><Navbar /><Home /></>
+      },
+      {
+        path:'/home',
+        element:<JobBoardHome />
+      },
+      {
+        path: '/resources',
+        element:<ResourcePage />
+      },
+      {
+        path:'/user/profile',
+        element:<UserProfilePage />
+      },
+      {
+        path: '/signup',
+        element: <Signup />
+      },
+      {
+        path: '/verify',
+        element: <VerifyEmail />
+      },
+      {
+        path: '/verify/:token',
+        element: <Verify />
+      },
+      {
+        path: '/login',
+        element: <Login />
+      },
+      {
+        path: '/forgot-password',
+        element: <ForgotPassword />
+      },
+      {
+        path: '/verify-otp/:email',
+        element: <VerifyOTP />
+      },
+      {
+        path: '/change-password/:email',
+        element: <ChangePassword />
+      },
+      {
+        path: '/cmp',
+        element: <CVJobComparison />
+      },
+    ]
+ }
   
 ])
 
