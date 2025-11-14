@@ -12,6 +12,7 @@ import testroute from "./routes/test.js"
 import geminiRoute from "./apiIntegration/gemini.js";
 import roadmapRoute from "./routes/roadmapRoute.js"
 import compareRouter from "./routes/compare.js";
+import chatRouter from "./routes/chat.js"
 
 const app = express()
 
@@ -34,6 +35,7 @@ app.use('/test',testroute);
 app.use("/api/gemini", geminiRoute);
 app.use('/roadmap', roadmapRoute);
 app.use('/compare', compareRouter);
+app.use('/chat', chatRouter)
 // http://localhost:8000/user/register
 
 
