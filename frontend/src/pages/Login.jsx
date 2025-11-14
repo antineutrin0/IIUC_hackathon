@@ -57,7 +57,7 @@ const Login = () => {
           localStorage.getItem("accessToken")
         );
         toast.success(res.data.message);
-        res.data.user.isVerified ? navigate("/") : navigate("/verify");
+        res.data.user.isVerified ? navigate("/home") : navigate("/verify");
       }
     } catch (error) {
       console.log(error);

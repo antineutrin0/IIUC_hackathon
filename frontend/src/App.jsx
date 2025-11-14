@@ -13,23 +13,24 @@ import JobBoardHome from './components/home/JobBoardHome'
 import ResourcePage from './components/resource/ResourcePage'
 import UserProfilePage from './components/profile/UserProfilePage'
 import Recruiter from './components/recruiter/Recruiter'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <><Navbar /><Home /></>
-  },
+  },  
   {
    path:'/home',
-   element:<JobBoardHome></JobBoardHome>
+   element:<ProtectedRoute><Navbar /><JobBoardHome></JobBoardHome></ProtectedRoute>
   },
   {
     path: '/resources',
-    element:<ResourcePage></ResourcePage>,
+    element:<ProtectedRoute><Navbar /><ResourcePage></ResourcePage></ProtectedRoute>
   },
   {
     path:'/user/profile',
-    element:<UserProfilePage></UserProfilePage>
+    element:<ProtectedRoute><Navbar /><UserProfilePage></UserProfilePage></ProtectedRoute>
   },
   //  {
   //   path: '/recruiter',
@@ -63,11 +64,6 @@ const router = createBrowserRouter([
     path: '/change-password/:email',
     element: <ChangePassword />
   }
-  // {
-  //   path: '/profile',
-  //   element: <UserProfile />
-  // }
-  // ,
   
 ])
 

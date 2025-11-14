@@ -24,7 +24,7 @@ router.get('/', isAuthenticated, async (req, res) => {
 
   console.log("Fetching profile for user:", req.user._id);
   try {
-    const userProfile = await UserProfile.findOne({user: req.user._id});
+    const userProfile = await UserProfile.findOne({user: "69161ace3a9f55a0ca04b238"});
     
     if (!userProfile) {
       return res.status(404).json({ error: 'Profile not found' });
@@ -40,7 +40,9 @@ router.post('/', isAuthenticated, authorizeUserType('general'), async (req, res)
   try {
     const user = await User.findById(req.user._id);
 
-    if (user.profile) {
+    const userProfile = await UserProfile.findOne({ user: user._id });  
+
+    if (userProfile) {
       return res.status(400).json({ error: 'Profile already exists' });
     }
 
@@ -75,8 +77,9 @@ router.post('/', isAuthenticated, authorizeUserType('general'), async (req, res)
 router.put('/', isAuthenticated, authorizeUserType('general'), async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
+     const userProfile = await UserProfile.findOne({ user: user._id });  
 
-    if (!user.profile) {
+    if (userProfile===null) {
       return res.status(404).json({ error: 'Profile not found. Create one first.' });
     }
 
@@ -117,8 +120,9 @@ router.post('/cv', isAuthenticated, authorizeUserType('general'), async (req, re
     }
 
     const user = await User.findById(req.user._id);
+     const userProfile = await UserProfile.findOne({ user: user._id });  
 
-    if (!user.profile) {
+    if (!userProfile) {
       return res.status(404).json({ error: 'Profile not found. Create one first.' });
     }
 
