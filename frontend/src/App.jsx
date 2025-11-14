@@ -20,69 +20,60 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
-    element: <AppLayout />, // <-- Wrap everything with layout
-    children: [
-      {
-        path: "/",
-        element: (
-          <>
-            <Navbar />
-            <Home />
-          </>
-        ),
-      },
-      {
-        path: "/home",
-        element: <JobBoardHome />,
-      },
-      {
-        path: "/resources",
-        element: <ResourcePage />,
-      },
-      {
-        path: "/user/profile",
-        element: <UserProfilePage />,
-      },
-      {
-        path: "/signup",
-        element: <Signup />,
-      },
-      {
-        path: "/verify",
-        element: <VerifyEmail />,
-      },
-      {
-        path: "/verify/:token",
-        element: <Verify />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/forgot-password",
-        element: <ForgotPassword />,
-      },
-      {
-        path: "/verify-otp/:email",
-        element: <VerifyOTP />,
-      },
-      {
-        path: "/change-password/:email",
-        element: <ChangePassword />,
-      },
-      ,
-      {
-        path: "/roadmap",
-        element: <RoadmapDashboard />,
-      },
-      {
-        path: "/cmp",
-        element: <CVJobComparison />,
-      },
-    ],
+    path: '/',
+    element: <><Navbar /><Home /></>
+  },  
+  {
+   path:'/home',
+   element:<ProtectedRoute><Navbar /><JobBoardHome></JobBoardHome></ProtectedRoute>
   },
-]);
+  {
+    path: '/resources',
+    element:<ProtectedRoute><Navbar /><ResourcePage></ResourcePage></ProtectedRoute>
+  },
+  {
+    path:'/user/profile',
+    element:<ProtectedRoute><Navbar /><UserProfilePage></UserProfilePage></ProtectedRoute>
+  },
+   {
+    path: '/recruiter',
+    element: <Recruiter></Recruiter>,
+  },
+  {
+    path: '/signup',
+    element: <Signup />
+  },
+  {
+    path: '/verify',
+    element: <VerifyEmail />
+  },
+  {
+    path: '/verify/:token',
+    element: <Verify />
+  },
+  {
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPassword />
+  },
+  {
+    path: '/verify-otp/:email',
+    element: <VerifyOTP />
+  },
+  {
+    path: '/change-password/:email',
+    element: <ChangePassword />
+  },
+  {
+    path: '/cmp',
+    element: <CVJobComparison />
+  }
+  ,
+  
+])
 
 const App = () => {
   return (

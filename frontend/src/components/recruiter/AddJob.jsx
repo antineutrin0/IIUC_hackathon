@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { mockAPI } from "./jobMockApi";
+import axios from "axios";
 
 const AddJob = ({ onJobAdded }) => {
   const [jobData, setJobData] = useState({
@@ -32,8 +33,23 @@ const AddJob = ({ onJobAdded }) => {
           .map((s) => s.trim())
           .filter((s) => s),
       };
+      console.log("Submitting job data:", formattedData);
 
-      const newJob = await mockAPI.addJob(formattedData);
+    const res = await axios.post(
+    "http://localhost:8000/recruiter/jobs",
+    formattedData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }
+  );
+
+  const data = res.data; 
+  console.log("Job added:", data);
+      
+
       alert("✅ Job posted successfully!");
       setJobData({
         title: "",

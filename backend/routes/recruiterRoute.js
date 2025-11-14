@@ -110,6 +110,7 @@ recruiterRouter.post('/jobs', isAuthenticated, authorizeUserType('recruiter'), a
     if (!profile) {
       return res.status(404).json({ error: 'Recruiter profile not found' });
     }
+    console.log("job data",req.body);
     const {
       title,
       company,
