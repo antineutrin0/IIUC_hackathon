@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Briefcase, Clock, TrendingUp } from 'lucide-react';
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
