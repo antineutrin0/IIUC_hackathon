@@ -25,32 +25,31 @@ recruiterRouter.get('/dashboard', isAuthenticated, authorizeUserType('recruiter'
 });
 
 // POST /api/recruiter/profile - Create recruiter profile
-recruiterRouter.post('/dashboard', async (req, res) => {
+recruiterRouter.post('/dashboard', isAuthenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
-    if (user.profile) {
-      return res.status(400).json({ error: 'Recruiter profile already exists' });
-    }
+    const user = await User.findById(req.userId);
+    
+    // if (user.profile) {
+    //   return res.status(400).json({ error: 'Recruiter profile already exists' });
+    // }
 
     const { companyName, companyWebsite, companyLogo, dashboardNotes } = req.body;
 
-    // if (!companyName) {
-    //   return res.status(400).json({ error: 'Company name is required' });
-    // }
+    if (!companyName) {
+      return res.status(400).json({ error: 'Company name is required' });
+    }
 
     const profile = await RecruiterInfo.create({
-      user: user._id,
+      user:user._id,
       companyName,
       companyWebsite: companyWebsite || '',
       companyLogo: companyLogo || '',
       dashboardNotes: dashboardNotes || '',
     });
 
-    console.log("Created recruiter profile:", profile);
-
-    user.profile = profile._id;
-    user.profileModel = 'RecruiterProfile';
-    await user.save();
+    // user.profile = profile._id;
+    // user.profileModel = 'RecruiterProfile';
+    // await user.save();
 
     res.status(201).json({ success: true, profile });
   } catch (error) {
@@ -141,12 +140,8 @@ recruiterRouter.post('/jobs', isAuthenticated, authorizeUserType('recruiter'), a
       createdBy: user._id.toString(),
     });
     const job_id=job._id.toString();
-    console.log(job_id);
-
     profile.postedJobs.push(job_id);
-       console.log(job._id);
     await profile.save();
-
     res.status(201).json({ success: true, job });
   } catch (error) {
     res.status(500).json({ error: 'Failed to create job', details: error.message });

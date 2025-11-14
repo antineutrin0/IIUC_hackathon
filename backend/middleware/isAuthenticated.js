@@ -38,7 +38,8 @@ export const isAuthenticated = async(req, res, next) =>{
                 })
             }
            
-            req.userId = user._id  
+            req.user=user; 
+            console.log("from isAuth",req.user)
             next()
         })
     } catch (error) {

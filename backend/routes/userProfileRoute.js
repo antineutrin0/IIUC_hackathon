@@ -6,7 +6,7 @@ import { isAuthenticated, authorizeUserType } from '../middleware/isAuthenticate
 const router = express.Router();
 
 router.get('/me', isAuthenticated, async (req, res) => {
-
+  console.log("Inside /me route, user:", req.user);
   if(!req.user){
     return res.status(401).json({
       success:false,
@@ -24,7 +24,7 @@ router.get('/', isAuthenticated, async (req, res) => {
 
   console.log("Fetching profile for user:", req.user._id);
   try {
-    const userProfile = await UserProfile.findOne({user: "69161ace3a9f55a0ca04b238"});
+    const userProfile = await UserProfile.findOne({user: req.user._id});
     
     if (!userProfile) {
       return res.status(404).json({ error: 'Profile not found' });
