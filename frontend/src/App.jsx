@@ -14,7 +14,7 @@ import ResourcePage from "./components/resource/ResourcePage";
 import UserProfilePage from "./components/profile/UserProfilePage";
 import Recruiter from "./components/recruiter/Recruiter";
 import RoadmapDashboard from "./pages/RoadmapDashboard";
-import CVJobComparison from "./components/home/JobCompare";
+import AiJobCompare from "./components/home/JobCompare"; 
 import AppLayout from "./layout/AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ChatbotPage from './components/common/ChatbotPage';
