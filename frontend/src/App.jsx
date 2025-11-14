@@ -15,6 +15,7 @@ import UserProfilePage from './components/profile/UserProfilePage'
 import Recruiter from './components/recruiter/Recruiter'
 import CVJobComparison from './components/home/JobCompare'
 import AppLayout from './layout/AppLayout'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const router = createBrowserRouter([
  {

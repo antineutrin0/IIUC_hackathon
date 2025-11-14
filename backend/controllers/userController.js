@@ -7,13 +7,14 @@ import jwt from "jsonwebtoken"
 
 export const registerUser = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        if (!username || !email || !password) {
+        const { username, email, password, userType } = req.body;
+        if (!username || !email || !password||!userType) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
             })
         }
+        console.log("Registering user with email:", userType);
         const existingUser = await User.findOne({ email })
         if (existingUser) {
             return res.status(400).json({
@@ -25,7 +26,8 @@ export const registerUser = async (req, res) => {
         const newUser = await User.create({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            userType
         })
         const token = jwt.sign({ id: newUser._id }, process.env.SECRET_KEY, { expiresIn: "10m" })
         verifyMail(token, email)

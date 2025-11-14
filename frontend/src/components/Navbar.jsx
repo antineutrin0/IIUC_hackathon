@@ -55,7 +55,7 @@ const Navbar = () => {
 
                 {/* Desktop Menu */}
                 <ul className='hidden md:flex gap-7 items-center text-lg font-semibold text-green-800'>
-                    <li><Link to='/' className='hover:text-green-600 flex items-center gap-1'><Home className='w-4 h-4' /> Home</Link></li>
+                    <li><Link to='/home' className='hover:text-green-600 flex items-center gap-1'><Home className='w-4 h-4' /> Home</Link></li>
                     <li><Link to='/find-jobs' className='hover:text-green-600 flex items-center gap-1'><Briefcase className='w-4 h-4' /> Find Jobs</Link></li>
                     <li><Link to='/resources' className='hover:text-green-600 flex items-center gap-1'><FolderOpen className='w-4 h-4' /> Resources</Link></li>
                     <li><Link to='/about' className='hover:text-green-600'>About</Link></li>
