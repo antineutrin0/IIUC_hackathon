@@ -1,8 +1,11 @@
 import { useState } from "react";
 import Modal  from "./Modal";
 import { Save } from "lucide-react";
+import axios from "axios";
 
 const EditProfileModal = ({ isOpen, onClose, profile, onSave }) => {
+
+  console.log("Editing profile:", profile);
   const [formData, setFormData] = useState({
     headline: profile.headline,
     bio: profile.bio,
@@ -11,13 +14,35 @@ const EditProfileModal = ({ isOpen, onClose, profile, onSave }) => {
     targetRoles: profile.targetRoles.join(', ')
   });
 
-  const handleSave = () => {
-    onSave({
+const handleSave = async () => {
+  try {
+    const updatedData = {
       ...formData,
-      targetRoles: formData.targetRoles.split(',').map(r => r.trim()).filter(Boolean)
-    });
+      targetRoles: formData.targetRoles
+        .split(',')
+        .map(role => role.trim())
+        .filter(Boolean),
+    };
+
+    const response = await axios.put(
+      'http://localhost:8000/user/profile',
+      updatedData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      }
+    );
+
+    console.log('Profile updated successfully:', response.data);
+    onSave(response.data);
     onClose();
-  };
+  } catch (error) {
+    console.error('Failed to update profile:', error.response?.data || error.message);
+  }
+};
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Edit Profile">

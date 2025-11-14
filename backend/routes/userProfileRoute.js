@@ -6,7 +6,6 @@ import { isAuthenticated, authorizeUserType } from '../middleware/isAuthenticate
 const router = express.Router();
 
 router.get('/me', isAuthenticated, async (req, res) => {
-  console.log("Inside /me route, user:", req.user);
   if(!req.user){
     return res.status(401).json({
       success:false,
@@ -21,11 +20,9 @@ router.get('/me', isAuthenticated, async (req, res) => {
 
 // GET /api/profile - Get logged-in user profile
 router.get('/', isAuthenticated, async (req, res) => {
-
-  console.log("Fetching profile for user:", req.user._id);
   try {
-    const userProfile = await UserProfile.findOne({user: "69161ace3a9f55a0ca04b238"});
-    
+    const userProfile = await UserProfile.findOne({user: req.user._id});
+
     if (!userProfile) {
       return res.status(404).json({ error: 'Profile not found' });
     }
@@ -100,12 +97,8 @@ router.put('/', isAuthenticated, authorizeUserType('general'), async (req, res) 
       lastProfileUpdateAt: Date.now(),
     };
 
-    const profile = await UserProfile.findByIdAndUpdate(
-      user.profile,
-      updateData,
-      { new: true, runValidators: true }
-    );
-
+    const profile = await userProfile.updateOne(updateData, { new: true });
+    
     res.json({ success: true, profile });
   } catch (error) {
     res.status(500).json({ error: 'Failed to update profile', details: error.message });

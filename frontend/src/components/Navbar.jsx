@@ -40,6 +40,9 @@ const Navbar = () => {
             console.log(error)
         }
     }
+    const profilehandler = () => {
+        navigate('/user/profile')
+    }   
 
     return (
         <nav className='p-3 border-b border-gray-200 bg-transparent relative z-50'>
@@ -73,7 +76,7 @@ const Navbar = () => {
                             <DropdownMenuContent align='end'>
                                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem className="flex items-center gap-2"><User className='w-4 h-4 text-green-600' /> Profile</DropdownMenuItem>
+                                <DropdownMenuItem  onClick={profilehandler} className="flex items-center gap-2"><User className='w-4 h-4 text-green-600' /> Profile</DropdownMenuItem>
                                 <DropdownMenuItem className="flex items-center gap-2"><BookA className='w-4 h-4 text-green-600' /> Notes</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={logoutHandler} className="flex items-center gap-2 text-red-600">

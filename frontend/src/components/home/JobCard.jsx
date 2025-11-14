@@ -1,8 +1,11 @@
+import { b } from 'framer-motion/dist/types.d-BJcRxCew';
 import { Briefcase, Clock, TrendingUp } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 const JobCard = ({ job, onClick }) => {
+
+  const [isApplied,setIsApplied]=useState(false);
   const navigate = useNavigate();
   const getTimeAgo = (date) => {
     const days = Math.floor((new Date() - new Date(date)) / (1000 * 60 * 60 * 24));
@@ -10,6 +13,21 @@ const JobCard = ({ job, onClick }) => {
     if (days === 1) return 'Yesterday';
     return `${days} days ago`;
   };
+
+  const handleApply = async() => {
+    setIsApplied(true);
+    try {
+     const res=await axios.post('http://localhost:8000/applications/apply',{
+        jobId:job._id
+     },{
+        headers:{ bearer: `Bearer ${localStorage.getItem("accessToken")}` }
+     });
+     console.log("Applied for job:", res.data);
+ 
+    } catch (error) {
+      console.error("Error applying for job:", error);
+    }
+  }   
 
   return (
     <div
@@ -62,10 +80,12 @@ const JobCard = ({ job, onClick }) => {
           </span>
         </div>
 
-        <div className="flex gap-2">
-          <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium">
+        <div className="flex gap-2 ">
+          (isApplied ?<button className="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors text-sm font-medium">
+            Applied
+          </button>:<button onClick={handleApply} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium">
             Apply now
-          </button>
+          </button>)
           <button className="px-4 py-2 border border-gray-300 text-black rounded-md hover:bg-gray-50 transition-colors text-sm">
             Learn more
           </button>

@@ -5,34 +5,84 @@ import EducationSection from './EducationSection';
 import SkillsSection from './SkillsSection';
 import LanguagesSection from './LanguagesSection';
 import EditProfileModal from './EditProfileModel';
+import EditProjectsModal from './EditProjectsModal';
+import EditEducationModal from './EditEducationModal';
+import EditSkillsModal from './EditSkillsModal';
+import EditLanguagesModal from './EditLanguagesModal';
+import EditCvModal from './EditCvModal';
 import { FileText, Loader2 } from 'lucide-react';
 import React from 'react';
-import demoProfile from './demoProfile';
 import { getData } from '@/context/userContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-const UserProfilePage = () => {
+const demoProfile = {
+  _id: 'demo',
+  username: 'Demo User',
+  email: 'demo@example.com',
+  headline: 'Full-Stack Developer',
+  bio: 'This is a demo profile.',
+  availability: 'open_to_work',
+  isPublic: true,
+  targetRoles: ['Full-Stack Engineer'],
+  skills: ['react', 'nodejs'],
+  languages: [{ name: 'English', proficiency: 'Fluent' }],
+  projects: [],
+  education: [],
+  cvText: '',
+  cvLink: '',
+};
 
+
+
+const UserProfilePage = () => {
   const { user, loading: userLoading } = getData();
-  console.log(user);
-  console.log("token from storage",localStorage.getItem('accessToken'));
   const navigate = useNavigate();
+
   const [profile, setProfile] = useState(demoProfile);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isEditProjectsOpen, setIsEditProjectsOpen] = useState(false);
+  const [isEditEducationOpen, setIsEditEducationOpen] = useState(false);
+  const [isEditSkillsOpen, setIsEditSkillsOpen] = useState(false);
+  const [isEditLanguagesOpen, setIsEditLanguagesOpen] = useState(false);
+  const [isEditCvOpen, setIsEditCvOpen] = useState(false);
+  const [isEditCv, setIsEditCv] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
- 
+  const handleUpdateCv = async (cvData) => {
+  try {
+    const token = localStorage.getItem("accessToken");
+
+    const res = await axios.put(
+      "http://localhost:8000/user/profile/cv",
+      cvData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (res.data.success) {
+       setProfile(res.data.profile);
+      toast.success("CV Updated Successfully");
+    }
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to update CV");
+  }
+};
+
 
   // Fetch user profile from backend
   useEffect(() => {
     const fetchProfile = async () => {
-      // Wait for user context to load
       if (userLoading) return;
 
-      // Redirect to login if no user
       if (!user) {
         toast.error('Please login to view your profile');
         navigate('/login');
@@ -42,30 +92,25 @@ const UserProfilePage = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem('accessToken');
-        console.log("Fetched token:", token);
         if (!token) {
           navigate('/login');
           return;
         }
+
         const res = await axios.get(`http://localhost:8000/user/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (res.data.success) {
-          setProfile(res.data.profile || demoProfile);
+        if (res.data?.success && res.data.profile) {
+          setProfile(res.data.profile);
+        } else {
+          // fallback if API shape different
+          setProfile(res.data?.profile || demoProfile);
         }
-      } catch (error) {
-        console.error('Failed to fetch profile:', error);
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
         setError('Failed to load profile data');
         toast.error('Failed to load profile');
-        
-        // If unauthorized, redirect to login
-        // if (error.response?.status === 401) {
-        //   localStorage.removeItem('accessToken');
-        //   navigate('/login');
-        // }
       } finally {
         setLoading(false);
       }
@@ -74,31 +119,42 @@ const UserProfilePage = () => {
     fetchProfile();
   }, [user, userLoading, navigate]);
 
+  /**
+   * handleSaveProfile
+   * Receives a partial update object (e.g. { headline, bio } or { projects: [...] })
+   * Sends to backend and merges into local state on success.
+   */
   const handleSaveProfile = async (updatedData) => {
     try {
       const token = localStorage.getItem('accessToken');
-      const res = await axios.put(
-        `http://localhost:8000/user/profile`,
-        updatedData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
-      if (res.data.success) {
-        setProfile({ ...profile, ...updatedData });
-        toast.success('Profile updated successfully');
+      if (!token) {
+        toast.error('Not authenticated');
+        navigate('/login');
+        return;
       }
-    } catch (error) {
-      console.error('Profile update failed:', error);
+
+      const res = await axios.put(`http://localhost:8000/user/profile`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // If backend returns updated profile, prefer that. Otherwise merge optimistic update.
+      if (res.data?.success) {
+        const serverProfile = res.data.profile || null;
+        setProfile(prev => (serverProfile ? serverProfile : { ...prev, ...updatedData }));
+        toast.success('Profile updated successfully');
+      } else {
+        toast.error(res.data?.message || 'Failed to update profile');
+      }
+    } catch (err) {
+      console.error('Profile update failed:', err);
       toast.error('Failed to update profile');
     }
   };
 
-  // Show loading state
+  // loading UI
   if (loading || userLoading) {
     return (
       <div className="min-h-screen bg-green-50 flex items-center justify-center">
@@ -110,7 +166,7 @@ const UserProfilePage = () => {
     );
   }
 
-  // Show error state
+  // error UI
   if (error) {
     return (
       <div className="min-h-screen bg-green-50 flex items-center justify-center">
@@ -129,11 +185,12 @@ const UserProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-green-50">
-       <div className="max-w-5xl mx-auto p-6">
+      <div className="max-w-5xl mx-auto p-6">
         {/* Profile Header */}
         <ProfileHeader
           profile={profile}
-          onEdit={() => setIsEditModalOpen(true)}
+          onEdit={() => setIsEditProfileOpen(true)}
+           onEditCv={() => setIsEditCv(true)}
         />
 
         {/* Two Column Layout */}
@@ -141,28 +198,25 @@ const UserProfilePage = () => {
           {/* Left Column */}
           <div className="lg:col-span-2">
             <ProjectsSection
-              projects={profile.projects}
-              onEdit={() => console.log('Edit projects')}
-              onAdd={() => console.log('Add project')}
+              projects={profile.projects || []}
+              onEdit={() => setIsEditProjectsOpen(true)}
+              onAdd={() => setIsEditProjectsOpen(true)}
             />
 
             <EducationSection
-              education={profile.education}
-              onEdit={() => console.log('Edit education')}
-              onAdd={() => console.log('Add education')}
+              education={profile.education || []}
+              onEdit={() => setIsEditEducationOpen(true)}
+              onAdd={() => setIsEditEducationOpen(true)}
             />
           </div>
 
           {/* Right Column */}
           <div className="lg:col-span-1">
-            <SkillsSection
-              skills={profile.skills}
-              onEdit={() => console.log('Edit skills')}
-            />
+            <SkillsSection skills={profile.skills || []} onEdit={() => setIsEditSkillsOpen(true)} />
 
             <LanguagesSection
-              languages={profile.languages}
-              onEdit={() => console.log('Edit languages')}
+              languages={profile.languages || []}
+              onEdit={() => setIsEditLanguagesOpen(true)}
             />
 
             {/* Additional Info Card */}
@@ -187,13 +241,68 @@ const UserProfilePage = () => {
           </div>
         </div>
 
-        {/* Edit Profile Modal */}
+        {/* Modals */}
         <EditProfileModal
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
+          isOpen={isEditProfileOpen}
+          onClose={() => setIsEditProfileOpen(false)}
           profile={profile}
-          onSave={handleSaveProfile}
+          onSave={(partial) => {
+            handleSaveProfile(partial);
+            setIsEditProfileOpen(false);
+          }}
         />
+
+        <EditProjectsModal
+          isOpen={isEditProjectsOpen}
+          onClose={() => setIsEditProjectsOpen(false)}
+          projects={profile.projects || []}
+          onSave={(partial) => {
+            // partial expected to be { projects: [...] }
+            handleSaveProfile(partial);
+            setIsEditProjectsOpen(false);
+          }}
+        />
+
+        <EditEducationModal
+          isOpen={isEditEducationOpen}
+          onClose={() => setIsEditEducationOpen(false)}
+          education={profile.education || []}
+          onSave={(partial) => {
+            // partial expected to be { education: [...] }
+            handleSaveProfile(partial);
+            setIsEditEducationOpen(false);
+          }}
+        />
+
+        <EditSkillsModal
+          isOpen={isEditSkillsOpen}
+          onClose={() => setIsEditSkillsOpen(false)}
+          skills={profile.skills || []}
+          onSave={(partial) => {
+            // partial expected to be { skills: [...] }
+            handleSaveProfile(partial);
+            setIsEditSkillsOpen(false);
+          }}
+        />
+
+        <EditLanguagesModal
+          isOpen={isEditLanguagesOpen}
+          onClose={() => setIsEditLanguagesOpen(false)}
+          languages={profile.languages || []}
+          onSave={(partial) => {
+            // partial expected to be { languages: [...] }
+            handleSaveProfile(partial);
+            setIsEditLanguagesOpen(false);
+          }}
+        />
+
+            <EditCvModal
+        isOpen={isEditCv}
+        onClose={() => setIsEditCv(false)}
+        profile={profile}
+        onSave={handleUpdateCv}
+      />
+
       </div>
     </div>
   );

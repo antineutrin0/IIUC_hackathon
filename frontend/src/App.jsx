@@ -25,15 +25,15 @@ const router = createBrowserRouter([
   },  
   {
    path:'/home',
-   element:<ProtectedRoute><Navbar /><JobBoardHome></JobBoardHome></ProtectedRoute>
+   element:<><Navbar /><JobBoardHome></JobBoardHome></>
   },
   {
     path: '/resources',
-    element:<ProtectedRoute><Navbar /><ResourcePage></ResourcePage></ProtectedRoute>
+    element:<><Navbar /><ResourcePage></ResourcePage></>
   },
   {
     path:'/user/profile',
-    element:<ProtectedRoute><Navbar /><UserProfilePage></UserProfilePage></ProtectedRoute>
+    element:<><Navbar /><UserProfilePage></UserProfilePage></>
   },
    {
     path: '/recruiter',
@@ -71,8 +71,6 @@ const router = createBrowserRouter([
     path: '/cmp',
     element: <CVJobComparison />
   }
-  ,
-  
 ])
 
 const App = () => {

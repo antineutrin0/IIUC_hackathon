@@ -1,6 +1,6 @@
 import { Edit2, User, Mail, Phone, MapPin } from "lucide-react";
 
-const ProfileHeader = ({ profile, onEdit }) => {
+const ProfileHeader = ({ profile, onEdit, onEditCv }) => {
   const availabilityLabels = {
     student: 'Student',
     employed: 'Currently Employed',
@@ -31,16 +31,26 @@ const ProfileHeader = ({ profile, onEdit }) => {
         <div className="flex-1">
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h1 className="text-3xl font-bold text-black mb-1">{profile.user.name}</h1>
+              <h1 className="text-3xl font-bold text-black mb-1">{profile.username}</h1>
               <p className="text-lg text-gray-700">{profile.headline}</p>
             </div>
-            <button
+            <div className="flex gap-3">
+              <button
               onClick={onEdit}
               className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
               <Edit2 size={18} />
               Edit Profile
             </button>
+            <button
+              onClick={onEditCv}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <Edit2 size={18} />
+              Upload CV
+            </button>
+            </div>
+            
           </div>
 
           <div className="flex flex-wrap gap-2 mb-4">
@@ -54,14 +64,10 @@ const ProfileHeader = ({ profile, onEdit }) => {
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-700">
+          <div className="flex flex-col gap-3 text-gray-700">
             <div className="flex items-center gap-2">
               <Mail size={18} className="text-green-600" />
-              <span>{profile.user.email}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Phone size={18} className="text-green-600" />
-              <span>{profile.user.phone}</span>
+              <span>{profile.email}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin size={18} className="text-green-600" />
