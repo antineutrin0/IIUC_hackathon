@@ -73,8 +73,12 @@ const router = createBrowserRouter([
         element:<ChatbotPage />
       },
       {
-        path: '/cmp',
-        element: <CVJobComparison />
+        path: '/compare/:jobId',
+        element: <AiJobCompare />
+      },
+      {
+        path: '/roadmap/:jobId',
+        element: <RoadmapDashboard />
       }
     ]
   }
