@@ -23,6 +23,8 @@ import FileUploader from "./pages/fileUploader";
 import JobDetailsPage from "./components/home/JobDetails";
 import SuggestedJobsPage from "./components/home/SuggestedJobsPage";
 import SuggestedResourcesPage from "./components/home/SuggestedResourcesPage";
+import RoadmapPopup from "./components/Roadmap/RoadmapPopup";
+import CareerRoadmapPage from "./pages/CareerRoadmapPage";
 
 const router = createBrowserRouter([
   {
@@ -103,7 +105,16 @@ const router = createBrowserRouter([
       {
         path:'/suggested-jobs',
         element:<SuggestedJobsPage></SuggestedJobsPage>
-      }
+      },
+      {
+        path:'/roadmap-popup',
+        element:<RoadmapPopup />
+      },
+      ,
+      {
+        path:'/career-roadmap',
+        element:<CareerRoadmapPage />
+      },
     ]
   }
 ]);
