@@ -42,7 +42,10 @@ const Navbar = () => {
     }
     const profilehandler = () => {
         navigate('/user/profile')
-    }   
+    } 
+    const roadmapHandler = () => {
+        navigate('/roadmap-popup')
+    }  
 
     return (
         <nav className='p-3 border-b border-gray-200 bg-transparent relative z-50'>
@@ -77,7 +80,7 @@ const Navbar = () => {
                                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem  onClick={profilehandler} className="flex items-center gap-2"><User className='w-4 h-4 text-green-600' /> Profile</DropdownMenuItem>
-                                <DropdownMenuItem className="flex items-center gap-2"><BookA className='w-4 h-4 text-green-600' /> Notes</DropdownMenuItem>
+                                <DropdownMenuItem onClick={roadmapHandler} className="flex items-center gap-2"><Target className='w-4 h-4 text-green-600' /> RoadMap</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={logoutHandler} className="flex items-center gap-2 text-red-600">
                                     <LogOut className='w-4 h-4' /> Logout
