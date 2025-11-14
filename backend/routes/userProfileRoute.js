@@ -48,6 +48,8 @@ router.post('/', isAuthenticated, authorizeUserType('general'), async (req, res)
 
     const profileData = {
       user: user._id,
+      username: user.username,
+      email: user.email,
       skills: req.body.skills || [],
       projects: req.body.projects || [],
       education: req.body.education || [],

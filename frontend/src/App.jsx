@@ -14,7 +14,6 @@ import ResourcePage from './components/resource/ResourcePage'
 import UserProfilePage from './components/profile/UserProfilePage'
 import Recruiter from './components/recruiter/Recruiter'
 import CVJobComparison from './components/home/JobCompare'
-import ScrollToTop from './lib/ScrollToTop'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const router = createBrowserRouter([
@@ -34,10 +33,10 @@ const router = createBrowserRouter([
     path:'/user/profile',
     element:<ProtectedRoute><Navbar /><UserProfilePage></UserProfilePage></ProtectedRoute>
   },
-  //  {
-  //   path: '/recruiter',
-  //   element: <Recruiter></Recruiter>,
-  // },
+   {
+    path: '/recruiter',
+    element: <Recruiter></Recruiter>,
+  },
   {
     path: '/signup',
     element: <Signup />
