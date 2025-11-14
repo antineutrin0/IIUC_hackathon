@@ -21,7 +21,7 @@ const JobCard = ({ job, onClick }) => {
         className="absolute top-5 right-5 flex items-center gap-1 text-gray-600 text-1xl hover:text-green-700 hover:underline transition-colors"
         onClick={(e) => {
           e.stopPropagation();
-          navigate('/cmp');
+          navigate(`/compare/${job._id}`);
         }}
       >
         <TrendingUp size={16} /> Compare & Improve

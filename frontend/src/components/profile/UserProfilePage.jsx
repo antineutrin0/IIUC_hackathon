@@ -167,6 +167,7 @@ const UserProfilePage = () => {
 
             {/* Additional Info Card */}
             <div className="bg-white rounded-lg shadow-sm p-6">
+              
               <h3 className="font-semibold text-black mb-3 flex items-center gap-2">
                 <FileText className="text-green-600" size={20} />
                 Profile Completion
