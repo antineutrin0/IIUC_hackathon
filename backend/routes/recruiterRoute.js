@@ -3,6 +3,7 @@ import { RecruiterInfo } from '../models/recruiterInfoSchema.js';
 import { User } from '../models/userModel.js';
 import { Job } from '../models/jobModel.js';
 import { isAuthenticated, authorizeUserType } from '../middleware/isAuthenticated.js';
+import { UserProfile } from '../models/userProfile.js';
 
 const recruiterRouter = express.Router();
 
@@ -25,13 +26,13 @@ recruiterRouter.get('/dashboard', isAuthenticated, authorizeUserType('recruiter'
 });
 
 // POST /api/recruiter/profile - Create recruiter profile
-recruiterRouter.post('/dashboard', isAuthenticated, async (req, res) => {
+recruiterRouter.post('/dashboard', isAuthenticated , authorizeUserType('recruiter'), async (req, res) => {
   try {
-    const user = await User.findById(req.userId);
-    
-    // if (user.profile) {
-    //   return res.status(400).json({ error: 'Recruiter profile already exists' });
-    // }
+    const user = await User.findById(req.user._id);
+     const recruiterProfile = await RecruiterInfo.findOne({ user: user._id });  
+    if (recruiterProfile) {
+      return res.status(400).json({ error: 'Recruiter profile already exists' });
+    }
 
     const { companyName, companyWebsite, companyLogo, dashboardNotes } = req.body;
 
@@ -148,18 +149,37 @@ recruiterRouter.post('/jobs', isAuthenticated, authorizeUserType('recruiter'), a
   }
 });
 
-// PUT /api/recruiter/jobs/:id - Update a posted job
-recruiterRouter.put('/jobs/:id', isAuthenticated, authorizeUserType('recruiter'), async (req, res) => {
+
+recruiterRouter.get('/jobs/:id', isAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    const profile = await RecruiterInfo.findById(user.profile);
+    if(!user){
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const job = await Job.findById(req.params.id);
+     
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    res.json({ success: true, job });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update job', details: error.message });
+  }
+});
+
+// PUT /api/recruiter/jobs/:id - Update a posted job
+recruiterRouter.put('/jobs/:id', isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const profile = await RecruiterInfo.findById({user:user._id});
     
     if (!profile) {
       return res.status(404).json({ error: 'Recruiter profile not found' });
     }
-
+    console.log("Profile:", req.params.id);
     const job = await Job.findById(req.params.id);
-    
+     
     if (!job) {
       return res.status(404).json({ error: 'Job not found' });
     }
@@ -197,7 +217,7 @@ recruiterRouter.put('/jobs/:id', isAuthenticated, authorizeUserType('recruiter')
 recruiterRouter.delete('/jobs/:id', isAuthenticated, authorizeUserType('recruiter'), async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    const profile = await RecruiterInfo.findById(user.profile);
+    const profile = await RecruiterInfo.findById({user:user._id});
     
     if (!profile) {
       return res.status(404).json({ error: 'Recruiter profile not found' });
