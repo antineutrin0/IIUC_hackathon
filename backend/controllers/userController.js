@@ -111,7 +111,7 @@ export const loginUser = async (req, res) => {
         if (!user) {
             return res.status(401).json({
                 success: false,
-                message: "Unauthorized access"
+                message: "User does not exist with this email."
             })
         }
         const passwordCheck = await bcrypt.compare(password, user.password)
