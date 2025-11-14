@@ -84,6 +84,10 @@ const router = createBrowserRouter([
       {
         path:'/uploadfile',
         element:<FileUploader />
+      },
+      {
+        path:'/user/profile',
+        element:<Navbar><UserProfilePage /></Navbar>
       }
     ]
   }
