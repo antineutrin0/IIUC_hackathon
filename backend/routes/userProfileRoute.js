@@ -22,7 +22,7 @@ router.get('/me', isAuthenticated, async (req, res) => {
 router.get('/', isAuthenticated, async (req, res) => {
   try {
     const userProfile = await UserProfile.findOne({user: req.user._id});
-
+    
     if (!userProfile) {
       return res.status(404).json({ error: 'Profile not found' });
     }
