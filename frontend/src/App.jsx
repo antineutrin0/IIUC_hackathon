@@ -17,6 +17,7 @@ import RoadmapDashboard from "./pages/RoadmapDashboard";
 import AiJobCompare from "./components/home/JobCompare"; 
 import AppLayout from "./layout/AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ChatbotPage from './components/common/ChatbotPage'
 
 const router = createBrowserRouter([
   {
