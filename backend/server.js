@@ -10,6 +10,7 @@ import jobRoute from "./routes/jobRoute.js"
 import resourceRoute from "./routes/resourceRoute.js"
 import testroute from "./routes/test.js"
 import geminiRoute from "./apiIntegration/gemini.js";
+import roadmapRoute from "./routes/roadmapRoute.js"
 
 const app = express()
 
@@ -30,6 +31,7 @@ app.use('/jobs', jobRoute);
 app.use('resource',resourceRoute);
 app.use('/test',testroute);
 app.use("/api/gemini", geminiRoute);
+app.use('/roadmap', roadmapRoute);
 // http://localhost:8000/user/register
 
 

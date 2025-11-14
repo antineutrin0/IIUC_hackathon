@@ -16,6 +16,7 @@ const JobSchema = new mongoose.Schema({
   recommendedExperience: { type: String, enum: EXPERIENCE, default: 'Fresher' },
   jobType: { type: String, enum: JOB_TYPES, default: 'Full-time' },
   description: { type: String, default: '' },
+  isAvailable: { type: Boolean, default: true },
   track: { type: String, default: '' }, // e.g., Web Development, Data
   // optionally a URL to apply
   applyUrl: { type: String, default: '' },
