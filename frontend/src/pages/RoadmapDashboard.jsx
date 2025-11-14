@@ -1,7 +1,8 @@
 // src/pages/RoadmapDashboard.jsx
 import { useState } from "react";
 import Roadmap from "../components/Roadmap/Roadmap";
-import { fetchRoadmap } from "../api/roadmapApi";
+import { fetchRoadmap } from "@/api/roadmapApi";
+
 
 export default function RoadmapDashboard() {
   const [userId, setUserId] = useState("");
