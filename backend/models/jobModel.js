@@ -22,6 +22,9 @@ const JobSchema = new mongoose.Schema({
   // tags for quick filtering
   tags: { type: [String], default: [] },
   createdBy: { type: String, default: 'seed' },
+  suggestedTo: { type: [String], default: [] },
+  clickedBy: { type: [String], default: [] },
+  aplliedBy: { type: [String], default: [] }
 }, { timestamps: true });
 
 JobSchema.index({ title: 'text', company: 'text', description: 'text' });

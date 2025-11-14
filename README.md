@@ -47,6 +47,7 @@ npm run dev
 ```bash
 cd backend
 npm install
+npm run seed #add seeded data to jobs and resources collection
 npm run dev
 ```
 
@@ -55,8 +56,8 @@ Create a `.env` file in the backend directory:
 ```
 PORT=8000
 SECRET_KEY=IIUC_Hackathon
-MONGO_URI=mongodb+srv://maharabopi73:OpiYashLm10@cluster0.eqqfzsi.mongodb.net/IIUC_hackathon
+MONGO_URI=<your mongodb database uri>
 MAIL_PASS=<your gmail app password>
-MAIL_USER=2<you gmail>
+MAIL_USER=<you gmail>
 GEMINI_API_KEY=<your gemini api key>
 ```
