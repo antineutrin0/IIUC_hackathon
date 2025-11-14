@@ -108,7 +108,7 @@ const ChatbotPage = () => {
   return (
     <div className="min-h-screen bg-green-50 flex flex-col">
       {/* Header */}
-      <div className="bg-white shadow-md">
+      <div className="fixed left-0 right-0 bg-white shadow-md z-50">
         <div className="max-w-5xl mx-auto px-6 py-4">
           <div className="flex items-center space-x-3">
             <div className="bg-green-100 p-2 rounded-full">
@@ -127,7 +127,7 @@ const ChatbotPage = () => {
       </div>
 
       {/* Chat Messages Container */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden mt-20">
         <div className="max-w-5xl mx-auto h-full flex flex-col">
           <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
             {messages.map((message) => (
