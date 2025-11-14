@@ -16,6 +16,7 @@ import Recruiter from './components/recruiter/Recruiter'
 import CVJobComparison from './components/home/JobCompare'
 import AppLayout from './layout/AppLayout'
 import ProtectedRoute from './components/ProtectedRoute'
+import ChatbotPage from './components/common/ChatbotPage'
 
 const router = createBrowserRouter([
  {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: '/cmp',
         element: <CVJobComparison />
+      },
+      {
+        path: '/chatpage',
+        element: <ChatbotPage />
       },
     ]
  }
