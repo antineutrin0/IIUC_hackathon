@@ -19,6 +19,7 @@ import AppLayout from "./layout/AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ChatbotPage from './components/common/ChatbotPage';
 import ChatbotButton from "./components/common/ChatbotButton";
+import FileUploader from "./pages/fileUploader";
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
       {
         path: '/roadmap/:jobId',
         element: <RoadmapDashboard />
+      },
+      {
+        path:'/uploadfile',
+        element:<FileUploader />
       }
     ]
   }
