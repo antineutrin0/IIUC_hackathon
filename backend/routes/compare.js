@@ -13,10 +13,16 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 // EXPECTED STRICT JSON FORMAT
 // ---------------------------
 const COMPARE_FORMAT = `
-Return ONLY valid JSON. No explanation text, no markdown, no commentary.
+You are an AI Job Comparison Engine. Your task is to compare a user's profile with a job description and generate a STRICT, VALID JSON output.
+READ THESE RULES CAREFULLY AND FOLLOW THEM EXACTLY:
+### OUTPUT RULES (VERY IMPORTANT)
+1. Output **ONLY JSON**.
+2. NO text before or after the JSON.
+3. NO markdown.
+4. The JSON must match EXACTLY the following schema:
 
 {
-  "matchScore": 0, 
+  "matchScore": 0,
   "skillMatch": [],
   "missingSkills": [],
   "experienceNote": "",
@@ -37,6 +43,44 @@ Return ONLY valid JSON. No explanation text, no markdown, no commentary.
     }
   }
 }
+### SCORING RULES
+- matchScore = integer between **0 to 100**
+- Formula (use this strictly):
+  - Skill Match = 60% weight  
+  - Experience Match = 25%  
+  - Requirement Fit = 15%  
+- DO NOT exceed the 0–100 range.
+
+### SKILL MATCHING RULES
+- Normalize skills: lowercase, trim spaces.
+- Compare against job.requiredSkills or job.description.
+- skillMatch = intersection(user.skills, job.skills)
+- missingSkills = job.skills NOT found in user.skills
+- If job has no skill list, extract skills from description.
+
+### EXPERIENCE ANALYSIS RULES
+- Check total years from profile.education, profile.projects, profile.bio.
+- If user has more experience than required → say so.
+- If less → say clearly.
+- experienceNote = 1-2 sentence summary.
+
+### STRENGTHS & WEAKNESSES RULES
+- strengths = what the user has that fits job needs (skills, projects, degrees)
+- weaknesses = missing skills, lack of experience, tech gaps
+- Keep each item short (5–12 words).
+
+### SUMMARY RULES
+- fitSummary = 2-3 sentence evaluation, neutral tone.
+- DO NOT reference being an AI.
+- DO NOT include recommendations beyond the job fit.
+### CHART DATA RULES
+**skillsRadar**
+- labels = all unique skills (combined user + job)
+- user = array of 0/1 (1 if user has skill, else 0)
+- job = array of 0/1 (1 if job requires skill, else 0)
+**gapBar**
+- labels = missingSkills
+- values = give severity score (1-8) based on importance in job description
 `;
 
 compareRouter.post("/", async (req, res) => {
@@ -62,7 +106,7 @@ compareRouter.post("/", async (req, res) => {
     // Build prompt
     // -----------------------------
     const prompt = `
-You are an AI job comparison engine. Compare the job description and user profile.
+${COMPARE_FORMAT}
 
 --- JOB DATA ---
 ${JSON.stringify(job, null, 2)}
@@ -70,9 +114,9 @@ ${JSON.stringify(job, null, 2)}
 --- USER DATA ---
 ${JSON.stringify(profile, null, 2)}
 
-Generate strong insights, highlight strengths & weaknesses, quantify skill gaps.
-
-${COMPARE_FORMAT}
+──────────────────────
+### FINAL INSTRUCTION
+Return **ONLY THE JSON**, strictly following the schema above.
 `;
 
     // -----------------------------

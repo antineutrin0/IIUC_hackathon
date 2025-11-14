@@ -212,7 +212,7 @@ const AiJobCompare = () => {
             <div style={{ width: "100%", height: 360 }}>
               <ResponsiveContainer>
                 <BarChart data={gapData}>
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid strokeDasharray="5 5" />
                   <XAxis dataKey="skill" />
                   <Tooltip />
                   <Bar dataKey="value" fill="#ef4444" />
