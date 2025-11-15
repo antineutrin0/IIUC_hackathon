@@ -12,6 +12,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const SYSTEM_PROMPT = `
 You are a professional career assistant. 
 Your job is to provide helpful, clear career advice.
+Responses must be relevant and alligned with youth employment and SDG 8 goals.
+Clearly indicate when the bot is suggesting, not guaranteeing outcomes.
 
 STRICT OUTPUT RULES:
 1. Output ONLY the final message.
@@ -46,7 +48,7 @@ ${JSON.stringify(profile)}
 --- LAST 20 MESSAGES ---
 ${JSON.stringify(conversation)}
 
-Respond with a single short helpful message.
+Respond with a single short helpful message of at most 4 sentence.
 ONLY return the text. Nothing else.
     `;
 

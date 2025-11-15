@@ -76,6 +76,60 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* PRINT-ONLY AREA */
+@media print {
+  .print-only {
+    display: block !important;
+  }
+  .screen-only {
+    display: none !important;
+  }
+}
+
+/* SCREEN ONLY */
+.print-only {
+  display: none;
+}
+
+/* Minimalist print formatting */
+@media print {
+  body {
+    font-family: "Inter", sans-serif !important;
+  }
+
+  .print-container {
+    padding: 20px;
+    line-height: 1.5;
+    font-size: 14px;
+  }
+
+  .print-section {
+    margin-bottom: 25px;
+    page-break-inside: avoid;
+  }
+
+  .print-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .print-subtitle {
+    font-size: 18px;
+    margin: 12px 0 6px;
+    font-weight: 600;
+  }
+
+  .print-list {
+    padding-left: 20px;
+  }
+
+  .print-list li {
+    margin-bottom: 4px;
+  }
+}
+
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

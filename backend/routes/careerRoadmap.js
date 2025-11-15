@@ -2,6 +2,7 @@ import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 import { UserProfile } from "../models/userProfile.js";
+import { Roadmap } from "../models/roadmapModel.js";
 import { Job } from "../models/jobModel.js";
 import { isAuthenticated } from "../middleware/isAuthenticated.js";
 
@@ -56,24 +57,26 @@ Respond using EXACTLY this JSON structure:
 }
 `;
 
-
 careerRoadmap.post("/", isAuthenticated, async (req, res) => {
-    console.log("Received roadmap generation request");
+  console.log("Received roadmap generation request");
   try {
     const userId = req.user._id;
     const { targetJob, timeframe } = req.body;
     console.log("Request data:", { userId, targetJob, timeframe });
 
     if (!userId || !targetJob) {
-        console.log("Missing userId or targetJob");
-      return res.status(400).json({ error: "userId and target job are required" });
+      console.log("Missing userId or targetJob");
+      return res
+        .status(400)
+        .json({ error: "userId and target job are required" });
     }
 
     // Load user profile + job from MongoDB
     const profile = await UserProfile.findOne({ user: userId }).lean();
 
-    if (!profile) return res.status(404).json({ error: "User profile not found" });
-    
+    if (!profile)
+      return res.status(404).json({ error: "User profile not found" });
+
     const prompt = `
 You are an AI career roadmap generator.
 
@@ -85,7 +88,7 @@ ${JSON.stringify(targetJob, null, 2)}
 
 Timeframe to achieve the goal: ${timeframe || "as soon as possible"}
 
-Generate a tailored learning roadmap for this user to match the job.
+Generate a tailored learning roadmap for this user to match the job in Bangladeshi context.
 RULES:
 - Divide roadmap into 3–6 phases.
 - Each phase must contain: startWeek, endWeek, topics, technologies, projectIdeas, expectedOutcome.
@@ -98,7 +101,6 @@ RULES:
 ${ROADMAP_FORMAT}
 `;
 
-    
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     const result = await model.generateContent(prompt);
 
@@ -108,15 +110,22 @@ ${ROADMAP_FORMAT}
       // Some outputs may have backticks or whitespace
       text = text.replace(/```json|```/g, "").trim();
       const json = JSON.parse(text);
+
+      // Save to MongoDB
+      const savedRoadmap = await Roadmap.create({
+        user: userId,
+        targetJob: targetJob?.title || targetJob,
+        timeframe: timeframe || null,
+        roadmapData: json,
+      });
       return res.json(json);
     } catch (err) {
       console.error("JSON parse error:", err);
       return res.status(500).json({
         error: "Gemini did not return valid JSON",
-        raw: text
+        raw: text,
       });
     }
-
   } catch (err) {
     console.error("Roadmap API error:", err);
     res.status(500).json({ error: "Failed to generate roadmap" });
@@ -124,5 +133,3 @@ ${ROADMAP_FORMAT}
 });
 
 export default careerRoadmap;
-
-
