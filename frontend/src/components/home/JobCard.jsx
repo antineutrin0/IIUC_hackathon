@@ -36,7 +36,7 @@ const JobCard = ({ job }) => {
       
     } catch (error) {
       console.error("Error applying for job:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "Failed to apply for job");
+      // alert(error.response?.data?.message || "Failed to apply for job");
     } 
   };
 

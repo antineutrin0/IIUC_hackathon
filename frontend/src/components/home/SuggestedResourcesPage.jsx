@@ -206,7 +206,7 @@ const SuggestedResourcesPage = () => {
         {/* Header Section */}
         <div className="mb-8">
           <div className="text-center mb-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full mb-4 shadow-lg">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r bg-green-100 text-black rounded-full mb-4 shadow-lg">
               <Brain size={20} />
               <span className="font-semibold">AI-Powered Learning Recommendations</span>
             </div>

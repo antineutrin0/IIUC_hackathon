@@ -38,16 +38,16 @@ const SuggestedResourceCard = ({ resource, matchDetails }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-l-4 border-blue-600">
+    <div className=" rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden bg-green-50">
       <div className="flex flex-col md:flex-row">
         {/* Thumbnail Section */}
-        <div className={`md:w-80 h-48 md:h-auto ${thumbnailColors[getColor()]} flex items-center justify-center flex-shrink-0 relative`}>
+        <div className={`md:w-80 h-48 md:h-auto bg-green-300 flex items-center justify-center flex-shrink-0 relative`}>
           <BookOpen className="text-white" size={64} />
           
           {/* Match Score Badge on Thumbnail */}
           <div className={`absolute top-4 right-4 w-16 h-16 rounded-full ${getMatchColor(resource.matchScore)} flex items-center justify-center shadow-lg`}>
             <div className="absolute inset-1 bg-white rounded-full flex flex-col items-center justify-center">
-              <span className="text-lg font-bold text-gray-800">{resource.matchScore}</span>
+              <span className="text-lg font-bold text-gray-800">{resource.matchScore}%</span>
               <span className="text-xs text-gray-600 font-medium">Match</span>
             </div>
           </div>
@@ -228,7 +228,7 @@ const SuggestedResourceCard = ({ resource, matchDetails }) => {
           <div className="mt-4 pt-4 border-t border-gray-200">
             <button
               onClick={handleClick}
-              className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-semibold shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+              className="w-full px-6 py-3 bg-gradient-to-r from-green-600 to-green-400 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-semibold shadow-md hover:shadow-lg flex items-center justify-center gap-2"
             >
               Start Learning
               <ExternalLink size={18} />

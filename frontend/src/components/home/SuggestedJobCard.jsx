@@ -95,7 +95,7 @@ const SuggestedJobCard = ({ job, matchDetails }) => {
           <div className="flex flex-col items-center gap-2">
             <div className={`relative w-20 h-20 rounded-full ${getMatchColor(job.matchScore)} flex items-center justify-center shadow-lg`}>
               <div className="absolute inset-1 bg-white rounded-full flex flex-col items-center justify-center">
-                <span className="text-2xl font-bold text-gray-800">{job.matchScore}</span>
+                <span className="text-2xl font-bold text-gray-800">{job.matchScore}%</span>
                 <span className="text-xs text-gray-600 font-medium">Match</span>
               </div>
             </div>
