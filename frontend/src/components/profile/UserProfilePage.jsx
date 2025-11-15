@@ -145,6 +145,8 @@ const UserProfilePage = () => {
         const serverProfile = res.data.profile || null;
         setProfile(prev => (serverProfile ? serverProfile : { ...prev, ...updatedData }));
         toast.success('Profile updated successfully');
+
+
       } else {
         toast.error(res.data?.message || 'Failed to update profile');
       }
