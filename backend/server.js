@@ -15,6 +15,7 @@ import compareRouter from "./routes/compare.js";
 import chatRouter from "./routes/chat.js"
 import uploadRoute from "./routes/upload.js"
 import careerRoadmap from "./routes/careerRoadmap.js"
+import cVrouter from "./routes/cvToProfile.js"
 
 const app = express()
 
@@ -40,6 +41,7 @@ app.use('/compare', compareRouter);
 app.use('/chat', chatRouter)
 app.use("/cloudinary", uploadRoute);
 app.use('/career-roadmap', careerRoadmap);
+app.use('/profile', cVrouter);
 // http://localhost:8000/user/register
 
 
