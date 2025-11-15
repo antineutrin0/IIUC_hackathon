@@ -12,7 +12,7 @@ const EducationSchema = new Schema({
 }, { _id: false });
 
 const LanguageSchema = new Schema({
-  name: { type: String, required: true, trim: true },
+  name: { type: String, trim: true },
   proficiency: {
     type: String,
     enum: ['Basic', 'Conversational', 'Fluent', 'Native'],
@@ -29,7 +29,7 @@ const AddressSchema = new Schema({
 }, { _id: false });
 
 const ProjectSchema = new Schema({
-  title: { type: String, trim: true, required: true },
+  title: { type: String, trim: true, },
   description: { type: String, default: '' },
   link: { type: String, default: '' },
   techStack: { type: [String], default: [], set: arr => Array.from(new Set((arr || []).map(s => s.trim().toLowerCase()))) },
@@ -44,8 +44,8 @@ const UserProfileSchema = new Schema({
     ref: 'User',
     required: true
   },
-  username: { type: String, required: true, trim: true },
-  email: { type: String, required: true, trim: true, lowercase: true },
+  username: { type: String, trim: true },
+  email: { type: String, trim: true, lowercase: true },
   skills: { type: [String], default: [], set: arr => Array.from(new Set((arr || []).map(s => s.trim().toLowerCase()))) },
   projects: { type: [ProjectSchema], default: [] },
   education: { type: [EducationSchema], default: [] },

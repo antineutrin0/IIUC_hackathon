@@ -9,15 +9,26 @@ const cVrouter = express.Router();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// ----------------------
-// HELPER: AI extraction
-// ----------------------
 async function extractDataFromCV(cvText) {
   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const prompt = `
-You are an expert CV parser. 
-Extract all structured data from the following CV text and return ONLY a valid JSON object matching this structure:
+You are a strict CV → JSON parser. 
+Your ONLY job is to convert the CV text into a JSON object EXACTLY matching the schema below.
+
+⚠️ IMPORTANT RULES — FOLLOW STRICTLY ⚠️
+1. Output ONLY valid JSON. No text before or after. No markdown. No explanations.
+2. Do NOT include comments.
+3. Do NOT change field names.
+4. All strings MUST be valid JSON strings (double quotes only).
+5. If information is missing in the CV → return an empty string "" or empty array [].
+6. NEVER return undefined, null, or extra fields.
+7. Arrays must NEVER contain undefined items.
+8. Boolean values must be true or false.
+9. Dates must be strings (not Date objects).
+10. JSON must be valid and parseable on first attempt.
+
+Here is the STRICT JSON template you MUST follow:
 
 {
   "skills": [],
@@ -43,7 +54,7 @@ Extract all structured data from the following CV text and return ONLY a valid J
     }
   ],
   "languages": [
-    { "name": "", "proficiency": "Basic/Conversational/Fluent/Native" }
+    { "name": "", "proficiency": "Basic" }
   ],
   "address": {
     "country": "",
@@ -55,21 +66,39 @@ Extract all structured data from the following CV text and return ONLY a valid J
   "bio": "",
   "headline": "",
   "targetRoles": [],
-  "availability": "student/employed/unemployed/looking/open_to_work/not_looking"
+  "availability": "open_to_work"
 }
 
-CV TEXT:
+Now extract the data from this CV:
+
+<<<CV_TEXT_START>>>
 ${cvText}
-`;
+<<<CV_TEXT_END>>>
+
+Return ONLY the JSON above.`;
 
   const result = await model.generateContent(prompt);
-  const text = result.response.text();
+  const text = result.response.text().trim();
 
+  // ---- STRONGER JSON RECOVERY ----
   try {
+    // Option 1: direct JSON parse
     return JSON.parse(text);
   } catch (err) {
-    console.error("❌ JSON Parse Error", err);
-    throw new Error("AI returned invalid JSON");
+    console.error("❌ First JSON parse failed. Attempting cleanup...");
+
+    // Option 2: automatic cleanup (remove weird characters)
+    const cleaned = text
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
+
+    try {
+      return JSON.parse(cleaned);
+    } catch (err2) {
+      console.error("❌ Cleanup parse failed:", err2);
+      throw new Error("AI returned invalid JSON");
+    }
   }
 }
 
@@ -86,11 +115,13 @@ cVrouter.post("/update-from-cv", async (req, res) => {
 
     // 1️⃣ Get AI extracted structured data
     const parsedData = await extractDataFromCV(cvText);
+    console.log("Extracted CV Data:", parsedData);
 
     // 2️⃣ Find User Profile
-    const profile = await UserProfile.findOne({ user: userId });
+    let profile = await UserProfile.findOne({ user: userId });
+
     if (!profile) {
-      return res.status(404).json({ error: "User profile not found" });
+        profile=await UserProfile.create({user:userId});
     }
 
     // 3️⃣ Update fields safely
