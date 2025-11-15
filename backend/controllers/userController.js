@@ -4,6 +4,7 @@ import { Session } from "../models/sessionModel.js";
 import { User } from "../models/userModel.js";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
+import { UserProfile } from "../models/userProfile.js";
 
 export const registerUser = async (req, res) => {
     try {
@@ -38,6 +39,7 @@ export const registerUser = async (req, res) => {
             message: "User registered successfully",
             data: newUser
         })
+            
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -105,6 +107,7 @@ export const loginUser = async (req, res) => {
                 message: 'All fields are required'
             })
         }
+         
         const user = await User.findOne({ email })
         if (!user) {
             return res.status(401).json({

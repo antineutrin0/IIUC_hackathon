@@ -18,13 +18,21 @@ const EditCvModal = ({ isOpen, onClose, cvText = "", cvLink = "", onSave }) => {
     }
   }, [isOpen, cvText, cvLink]);
 
-  const handleSave = async () => {
+  const handleSave = async (e) => {
+    setText(e.target.value );
+    setLink(e.target.value );
+   const newtext= text
+      .replace(/[^a-zA-Z0-9 .,;:!?@()\n\r]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+    console.log("Saving CV data:", { newtext, link });
+
     try {
       const res = await axios.post(
         `http://localhost:8000/profile/update-from-cv`,
         {
           cvText: text,
-          id: user._id,
+          userId: user._id,
         },
         {
           headers: {
