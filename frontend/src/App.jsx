@@ -20,6 +20,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ChatbotPage from './components/common/ChatbotPage';
 import ChatbotButton from "./components/common/ChatbotButton";
 import FileUploader from "./pages/fileUploader";
+import JobDetailsPage from "./components/home/JobDetails";
+import SuggestedJobsPage from "./components/home/SuggestedJobsPage";
+import SuggestedResourcesPage from "./components/home/SuggestedResourcesPage";
 import RoadmapPopup from "./components/Roadmap/RoadmapPopup";
 import CareerRoadmapPage from "./pages/CareerRoadmapPage";
 
@@ -32,8 +35,8 @@ const router = createBrowserRouter([
         element: <><Navbar /><Home /></>
       },
       {
-        path:'/home',
-        element:<JobBoardHome />
+        path:'/find-jobs',
+        element:<><Navbar></Navbar><JobBoardHome /></>
       },
       {
         path: '/resources',
@@ -90,6 +93,18 @@ const router = createBrowserRouter([
       {
         path:'/user/profile',
         element:<Navbar><UserProfilePage /></Navbar>
+      },
+      {
+        path:'/jobs/:id',
+        element:<JobDetailsPage></JobDetailsPage>
+      },
+      {
+        path:'/suggested-resources',
+        element:<SuggestedResourcesPage></SuggestedResourcesPage>
+      },
+      {
+        path:'/suggested-jobs',
+        element:<SuggestedJobsPage></SuggestedJobsPage>
       },
       {
         path:'/roadmap-popup',

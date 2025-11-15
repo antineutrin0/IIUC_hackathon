@@ -1,4 +1,4 @@
-import { Play, Star } from "lucide-react";
+import { ExternalLink, BookOpen, Tag } from "lucide-react";
 
 const ResourceCard = ({ resource, onClick }) => {
   const thumbnailColors = {
@@ -10,53 +10,94 @@ const ResourceCard = ({ resource, onClick }) => {
     green: 'bg-gradient-to-br from-green-500 to-green-700'
   };
 
+  // Get a color based on platform or random
+  const getColor = () => {
+    const colors = Object.keys(thumbnailColors);
+    const platformColors = {
+      'youtube': 'orange',
+      'coursera': 'blue',
+      'udemy': 'purple',
+      'edx': 'teal',
+      'codecademy': 'yellow',
+      'freecodecamp': 'green'
+    };
+    
+    const platform = (resource.platform || '').toLowerCase();
+    return platformColors[platform] || colors[Math.floor(Math.random() * colors.length)];
+  };
+
   return (
     <div
       onClick={() => onClick(resource)}
       className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden border border-gray-100"
     >
       <div className="flex gap-4">
-        <div className={`w-64 h-40 ${thumbnailColors[resource.thumbnail]} flex items-center justify-center flex-shrink-0`}>
-          <Play className="text-white" size={48} />
+        <div className={`w-64 h-40 ${thumbnailColors[getColor()]} flex items-center justify-center flex-shrink-0`}>
+          <BookOpen className="text-white" size={48} />
         </div>
         
         <div className="flex-1 p-4">
-          <h3 className="font-semibold text-black text-lg mb-2 hover:text-green-600">
-            {resource.title}
-          </h3>
+          <div className="flex items-start justify-between mb-2">
+            <h3 className="font-semibold text-black text-lg hover:text-green-600 flex-1">
+              {resource.title}
+            </h3>
+            <a 
+              href={resource.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="ml-2 text-green-600 hover:text-green-700"
+            >
+              <ExternalLink size={20} />
+            </a>
+          </div>
           
-          <p className="text-gray-700 text-sm mb-2 line-clamp-2">
-            {resource.description}
+          <p className="text-gray-700 text-sm mb-3 line-clamp-2">
+            {resource.description || 'No description available'}
           </p>
           
-          <p className="text-gray-600 text-sm mb-3">{resource.instructor}</p>
+          {resource.platform && (
+            <p className="text-gray-600 text-sm mb-3 font-medium">
+              Platform: {resource.platform}
+            </p>
+          )}
           
-          <div className="flex items-center gap-4 mb-3">
-            <div className="flex items-center gap-1">
-              <span className="font-semibold text-black">{resource.rating}</span>
-              <div className="flex text-orange-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={14}
-                    fill={i < Math.floor(resource.rating) ? "currentColor" : "none"}
-                  />
+          <div className="flex items-center gap-2 mb-3">
+            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+              resource.cost === 'Free' 
+                ? 'bg-green-100 text-green-700' 
+                : resource.cost === 'Paid' 
+                ? 'bg-blue-100 text-blue-700'
+                : 'bg-yellow-100 text-yellow-700'
+            }`}>
+              {resource.cost || 'Free'}
+            </span>
+          </div>
+          
+          {resource.relatedSkills && resource.relatedSkills.length > 0 && (
+            <div className="flex items-start gap-2">
+              <Tag size={16} className="text-gray-500 mt-1 flex-shrink-0" />
+              <div className="flex flex-wrap gap-1">
+                {resource.relatedSkills.slice(0, 5).map((skill, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-green-50 text-green-600 rounded text-xs capitalize"
+                  >
+                    {skill}
+                  </span>
                 ))}
+                {resource.relatedSkills.length > 5 && (
+                  <span className="px-2 py-1 text-gray-500 text-xs">
+                    +{resource.relatedSkills.length - 5} more
+                  </span>
+                )}
               </div>
-              <span className="text-gray-600 text-sm">({resource.reviews.toLocaleString()})</span>
             </div>
-          </div>
-          
-          <div className="flex items-center gap-4 text-sm text-gray-600">
-            <span>{resource.duration}</span>
-            <span>•</span>
-            <span>{resource.lectures} lectures</span>
-            <span>•</span>
-            <span>{resource.level}</span>
-          </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
+
 export default ResourceCard;

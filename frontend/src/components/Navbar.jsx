@@ -61,10 +61,9 @@ const Navbar = () => {
 
                 {/* Desktop Menu */}
                 <ul className='hidden md:flex gap-7 items-center text-lg font-semibold text-green-800'>
-                    <li><Link to='/home' className='hover:text-green-600 flex items-center gap-1'><Home className='w-4 h-4' /> Home</Link></li>
+                    <li><Link to='/suggested-jobs' className='hover:text-green-600 flex items-center gap-1'><Home className='w-4 h-4' /> Suggested Jobs</Link></li>
                     <li><Link to='/find-jobs' className='hover:text-green-600 flex items-center gap-1'><Briefcase className='w-4 h-4' /> Find Jobs</Link></li>
-                    <li><Link to='/resources' className='hover:text-green-600 flex items-center gap-1'><FolderOpen className='w-4 h-4' /> Resources</Link></li>
-                    <li><Link to='/about' className='hover:text-green-600'>About</Link></li>
+                    <li><Link to='/suggested-resources' className='hover:text-green-600 flex items-center gap-1'><FolderOpen className='w-4 h-4' />Recomanded Resources</Link></li>
 
                     {/* User Dropdown */}
                     {user ? (
@@ -112,7 +111,7 @@ const Navbar = () => {
                     {user ? (
                         <>
                             <hr className='border-gray-300' />
-                            <li className='flex items-center gap-2'><User className='w-4 h-4 text-green-600' /> Profile</li>
+                            <li onClick={profilehandler} className='flex items-center gap-2'><User className='w-4 h-4 text-green-600' /> Profile</li>
                             <li className='flex items-center gap-2'><BookA className='w-4 h-4 text-green-600' /> Notes</li>
                             <li onClick={logoutHandler} className='flex items-center gap-2 text-red-600 cursor-pointer'>
                                 <LogOut className='w-4 h-4' /> Logout

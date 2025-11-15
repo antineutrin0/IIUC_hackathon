@@ -32,7 +32,7 @@ app.use('/user/profile',userProfile);
 app.use('/recruiter', recruiterRoute);
 app.use('/course-provider', courseProviderRoute);
 app.use('/jobs', jobRoute);
-app.use('resource',resourceRoute);
+app.use('/resource',resourceRoute);
 app.use('/test',testroute);
 app.use("/api/gemini", geminiRoute);
 app.use('/roadmap', roadmapRoute);

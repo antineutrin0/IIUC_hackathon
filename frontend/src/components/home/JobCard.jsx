@@ -3,10 +3,11 @@ import { Briefcase, Clock, TrendingUp } from 'lucide-react';
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-const JobCard = ({ job, onClick }) => {
-
-  const [isApplied,setIsApplied]=useState(false);
+const JobCard = ({ job }) => {
+  const [isApplied, setIsApplied] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
   const navigate = useNavigate();
+
   const getTimeAgo = (date) => {
     const days = Math.floor((new Date() - new Date(date)) / (1000 * 60 * 60 * 24));
     if (days === 0) return 'Today';
@@ -14,33 +15,47 @@ const JobCard = ({ job, onClick }) => {
     return `${days} days ago`;
   };
 
-  const handleApply = async() => {
-    setIsApplied(true);
+  const handleApply = async (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    
+    if (isApplying || isApplied) return; // Prevent multiple clicks
+    
     try {
-     const res=await axios.post('http://localhost:8000/applications/apply',{
-        jobId:job._id
-     },{
-        headers:{ bearer: `Bearer ${localStorage.getItem("accessToken")}` }
-     });
-     console.log("Applied for job:", res.data);
- 
+      setIsApplied(true);
+      const res = await axios.put(
+        'http://localhost:8000/jobs/addjob',
+        { jobId: job._id },
+        {
+          headers: { 
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      console.log("Applied for job:", res.data);
+      
     } catch (error) {
-      console.error("Error applying for job:", error);
-    }
-  }   
+      console.error("Error applying for job:", error.response?.data || error.message);
+      // alert(error.response?.data?.message || "Failed to apply for job");
+    } 
+  };
+
+  const handleLearnMore = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    navigate(`/jobs/${job._id}`);
+  };
+
+  const handleCompare = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    navigate(`/compare/${job._id}`);
+  };
 
   return (
-    <div
-      onClick={() => onClick(job)}
-      className="relative bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-gray-100"
-    >
-      {/* New top-left navigation button */}
+    <div className="relative bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100">
+      {/* Compare button */}
       <button
-        className="absolute top-5 right-5 flex items-center gap-1 text-gray-600 text-1xl hover:text-green-700 hover:underline transition-colors"
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/compare/${job._id}`);
-        }}
+        className="absolute top-5 right-5 flex items-center gap-1 text-gray-600 text-sm hover:text-green-700 hover:underline transition-colors"
+        onClick={handleCompare}
       >
         <TrendingUp size={16} /> Compare & Improve
       </button>
@@ -80,13 +95,27 @@ const JobCard = ({ job, onClick }) => {
           </span>
         </div>
 
-        <div className="flex gap-2 ">
-          (isApplied ?<button className="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors text-sm font-medium">
-            Applied
-          </button>:<button onClick={handleApply} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium">
-            Apply now
-          </button>)
-          <button className="px-4 py-2 border border-gray-300 text-black rounded-md hover:bg-gray-50 transition-colors text-sm">
+        <div className="flex gap-2">
+          {isApplied ? (
+            <button 
+              className="px-4 py-2 bg-yellow-600 text-white rounded-md cursor-not-allowed text-sm font-medium"
+              disabled
+            >
+              Applied
+            </button>
+          ) : (
+            <button 
+              onClick={handleApply} 
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isApplying}
+            >
+              {isApplying ? 'Applying...' : 'Apply now'}
+            </button>
+          )}
+          <button 
+            onClick={handleLearnMore}  
+            className="px-4 py-2 border border-gray-300 text-black rounded-md hover:bg-gray-50 transition-colors text-sm"
+          >
             Learn more
           </button>
         </div>
@@ -94,4 +123,5 @@ const JobCard = ({ job, onClick }) => {
     </div>
   );
 };
+
 export default JobCard;
