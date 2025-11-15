@@ -32,19 +32,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <><Navbar /><Home /></>
+        element: <><Navbar/><Home /></>
       },
       {
         path:'/find-jobs',
-        element:<><Navbar></Navbar><JobBoardHome /></>
+        element:<><Navbar/><JobBoardHome /></>
       },
       {
         path: '/resources',
-        element:<ResourcePage />
+        element:<><Navbar/><ResourcePage /></>
       },
       {
         path:'/user/profile',
-        element:<UserProfilePage />
+        element:<><Navbar/><UserProfilePage /></>
       },
       {
         path: '/signup',
@@ -80,31 +80,31 @@ const router = createBrowserRouter([
       },
       {
         path: '/compare/:jobId',
-        element: <AiJobCompare />
+        element: <><Navbar/><AiJobCompare /></>
       },
       {
         path: '/roadmap/:jobId',
-        element: <RoadmapDashboard />
+        element: <><Navbar/><RoadmapDashboard /></>
       },
       {
         path:'/uploadfile',
-        element:<FileUploader />
+        element:<><Navbar/><FileUploader /></>
       },
       {
         path:'/user/profile',
-        element:<Navbar><UserProfilePage /></Navbar>
+        element:<><Navbar/><UserProfilePage /></>
       },
       {
         path:'/jobs/:id',
-        element:<JobDetailsPage></JobDetailsPage>
+        element:<><Navbar/><JobDetailsPage></JobDetailsPage></>
       },
       {
         path:'/suggested-resources',
-        element:<SuggestedResourcesPage></SuggestedResourcesPage>
+        element:<><Navbar/><SuggestedResourcesPage></SuggestedResourcesPage></>
       },
       {
         path:'/suggested-jobs',
-        element:<SuggestedJobsPage></SuggestedJobsPage>
+        element:<><Navbar/><SuggestedJobsPage></SuggestedJobsPage></>
       },
       {
         path:'/roadmap-popup',
@@ -113,7 +113,7 @@ const router = createBrowserRouter([
       ,
       {
         path:'/career-roadmap',
-        element:<CareerRoadmapPage />
+        element:<><Navbar/><CareerRoadmapPage /></>
       },
     ]
   }

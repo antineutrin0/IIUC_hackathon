@@ -3,13 +3,14 @@ import Modal from "./Modal";
 import { Save } from "lucide-react";
 import axios from "axios";
 import { getData } from "@/context/userContext";
+import { useNavigate } from "react-router-dom";
 
 const EditCvModal = ({ isOpen, onClose, cvText = "", cvLink = "", onSave }) => {
   const [text, setText] = useState("");
   const [link, setLink] = useState("");
   const { user } = getData();
   const token = localStorage.getItem("accessToken");
-
+  const navigate = useNavigate();
   // ✔ Load cvText + cvLink when modal opens
   useEffect(() => {
     if (isOpen) {
@@ -41,6 +42,10 @@ const EditCvModal = ({ isOpen, onClose, cvText = "", cvLink = "", onSave }) => {
           },
         }
       );
+
+      if(res.data){
+        navigate('/user/profile');
+      }
 
       console.log("Profile updated:", res.data);
       onSave?.(); // optional callback
