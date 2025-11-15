@@ -2,7 +2,7 @@
 import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
-import { UserProfile } from "../src/models/profile.js";
+import { UserProfile } from "../models/userProfile.js";
 
 dotenv.config();
 const cVrouter = express.Router();
