@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 app.use(cors({
-    origin:'https://iiuc-hackathon-sust.vercel.app/',
+    origin:'https://iiuc-hackathon-sust.vercel.app',
     credentials:true
 }))
 
