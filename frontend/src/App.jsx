@@ -19,7 +19,7 @@ import AppLayout from "./layout/AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ChatbotPage from './components/common/ChatbotPage';
 import ChatbotButton from "./components/common/ChatbotButton";
-import FileUploader from "./pages/fileUploader";
+import FileUploader from "./pages/FileUploader";
 import JobDetailsPage from "./components/home/JobDetails";
 import SuggestedJobsPage from "./components/home/SuggestedJobsPage";
 import SuggestedResourcesPage from "./components/home/SuggestedResourcesPage";
