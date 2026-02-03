@@ -80,7 +80,7 @@ const JobBoardHome = () => {
           page: currentPage,
         });
 
-        const url = `http://localhost:8000/jobs${queryString ? `?${queryString}` : ""}`;
+        const url = `https://iiuc-hackathon-backend.vercel.app/jobs${queryString ? `?${queryString}` : ""}`;
 
         const res = await fetch(url, { signal });
 
@@ -93,7 +93,9 @@ const JobBoardHome = () => {
 
         // Expecting shape: { success: true, jobs, pagination: { total, limit, skip, hasMore } }
         setJobs(data.jobs || []);
-        setTotalJobs((data.pagination && data.pagination.total) || (data.total ?? 0));
+        setTotalJobs(
+          (data.pagination && data.pagination.total) || (data.total ?? 0),
+        );
       } catch (err) {
         if (err.name === "AbortError") {
           // request was aborted - do nothing
@@ -141,14 +143,18 @@ const JobBoardHome = () => {
           {/* Job Listings */}
           <div className="lg:col-span-3">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-black mb-2">Latest Jobs</h2>
+              <h2 className="text-2xl font-bold text-black mb-2">
+                Latest Jobs
+              </h2>
               <p className="text-gray-700">
                 Get your desired job from top companies ({totalJobs} jobs found)
               </p>
             </div>
 
             {loading ? (
-              <div className="bg-white p-8 rounded-lg text-center">Loading jobs...</div>
+              <div className="bg-white p-8 rounded-lg text-center">
+                Loading jobs...
+              </div>
             ) : error ? (
               <div className="bg-white p-8 rounded-lg text-center text-red-600">
                 Error: {error}
@@ -157,7 +163,9 @@ const JobBoardHome = () => {
               <div className="space-y-4">
                 {jobs.length === 0 && (
                   <div className="bg-white p-12 rounded-lg text-center">
-                    <p className="text-gray-500 text-lg">No jobs found matching your criteria</p>
+                    <p className="text-gray-500 text-lg">
+                      No jobs found matching your criteria
+                    </p>
                   </div>
                 )}
 
@@ -176,10 +184,18 @@ const JobBoardHome = () => {
                   pageCount={pageCount}
                   onPageChange={handlePageClick}
                   forcePage={currentPage}
-                  containerClassName={"flex space-x-2 text-gray-700 select-none"}
-                  pageClassName={"px-4 py-2 border border-gray-300 rounded-md hover:bg-white"}
-                  previousClassName={"px-4 py-2 border border-gray-300 rounded-md hover:bg-white"}
-                  nextClassName={"px-4 py-2 border border-gray-300 rounded-md hover:bg-white"}
+                  containerClassName={
+                    "flex space-x-2 text-gray-700 select-none"
+                  }
+                  pageClassName={
+                    "px-4 py-2 border border-gray-300 rounded-md hover:bg-white"
+                  }
+                  previousClassName={
+                    "px-4 py-2 border border-gray-300 rounded-md hover:bg-white"
+                  }
+                  nextClassName={
+                    "px-4 py-2 border border-gray-300 rounded-md hover:bg-white"
+                  }
                   activeClassName={"bg-green-600 text-white"}
                   disabledClassName={"opacity-50 cursor-not-allowed"}
                 />

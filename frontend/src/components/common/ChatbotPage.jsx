@@ -40,17 +40,17 @@ const ChatbotPage = () => {
     }));
 
     console.log("API Request Payload:", formatted);
-    
+
     try {
       const response = await axios.post(
-        "http://localhost:8000/chat",
+        "https://iiuc-hackathon-backend.vercel.app/chat",
         { conversation: formatted },
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       console.log("API Response:", response.data.text);
 

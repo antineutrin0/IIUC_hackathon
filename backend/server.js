@@ -1,51 +1,52 @@
-import express from "express"
-import 'dotenv/config'
-import connectDB from "./database/db.js"
-import userRoute from "./routes/userRoute.js"
-import userProfile from "./routes/userProfileRoute.js"
-import cors from 'cors'
-import recruiterRoute from "./routes/recruiterRoute.js"
-import courseProviderRoute from "./routes/courseProviderRoute.js"
-import jobRoute from "./routes/jobRoute.js"
-import resourceRoute from "./routes/resourceRoute.js"
-import testroute from "./routes/test.js"
+import express from "express";
+import "dotenv/config";
+import connectDB from "./database/db.js";
+import userRoute from "./routes/userRoute.js";
+import userProfile from "./routes/userProfileRoute.js";
+import cors from "cors";
+import recruiterRoute from "./routes/recruiterRoute.js";
+import courseProviderRoute from "./routes/courseProviderRoute.js";
+import jobRoute from "./routes/jobRoute.js";
+import resourceRoute from "./routes/resourceRoute.js";
+import testroute from "./routes/test.js";
 import geminiRoute from "./apiIntegration/gemini.js";
-import roadmapRoute from "./routes/roadmapRoute.js"
+import roadmapRoute from "./routes/roadmapRoute.js";
 import compareRouter from "./routes/compare.js";
-import chatRouter from "./routes/chat.js"
-import uploadRoute from "./routes/upload.js"
-import careerRoadmap from "./routes/careerRoadmap.js"
-import cVrouter from "./routes/cvToProfile.js"
+import chatRouter from "./routes/chat.js";
+import uploadRoute from "./routes/upload.js";
+import careerRoadmap from "./routes/careerRoadmap.js";
+import cVrouter from "./routes/cvToProfile.js";
 
-const app = express()
+const app = express();
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json())
-app.use(cors({
-    origin:'https://iiuc-hackathon-sust.vercel.app',
-    credentials:true
-}))
+app.use(express.json());
+app.use(
+  cors({
+    origin: "https://iiuc-hackathon-sust.vercel.app",
+    credentials: true,
+  }),
+);
 
 // app.use('/auth', authRoute)
-app.use('/user', userRoute)
-app.use('/user/profile',userProfile);
-app.use('/recruiter', recruiterRoute);
-app.use('/course-provider', courseProviderRoute);
-app.use('/jobs', jobRoute);
-app.use('/resource',resourceRoute);
-app.use('/test',testroute);
+app.use("/user", userRoute);
+app.use("/user/profile", userProfile);
+app.use("/recruiter", recruiterRoute);
+app.use("/course-provider", courseProviderRoute);
+app.use("/jobs", jobRoute);
+app.use("/resource", resourceRoute);
+app.use("/test", testroute);
 app.use("/api/gemini", geminiRoute);
-app.use('/roadmap', roadmapRoute);
-app.use('/compare', compareRouter);
-app.use('/chat', chatRouter)
+app.use("/roadmap", roadmapRoute);
+app.use("/compare", compareRouter);
+app.use("/chat", chatRouter);
 app.use("/cloudinary", uploadRoute);
-app.use('/career-roadmap', careerRoadmap);
-app.use('/profile', cVrouter);
-// http://localhost:8000/user/register
+app.use("/career-roadmap", careerRoadmap);
+app.use("/profile", cVrouter);
+// https://iiuc-hackathon-backend.vercel.app/user/register
 
-
-app.listen(PORT,()=>{
-    connectDB()
-    console.log(`Server is listening at port ${PORT}`);  
-})
+app.listen(PORT, () => {
+  connectDB();
+  console.log(`Server is listening at port ${PORT}`);
+});

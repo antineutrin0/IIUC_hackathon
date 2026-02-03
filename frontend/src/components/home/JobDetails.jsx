@@ -17,20 +17,25 @@ const JobDetailsPage = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:8000/jobs/${id}`,
+          `https://iiuc-hackathon-backend.vercel.app/jobs/${id}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
-          }
+          },
         );
 
-        console.log('Fetched job:', res.data.job);
+        console.log("Fetched job:", res.data.job);
         setJob(res.data.job);
         setError(null);
       } catch (error) {
-        console.error('Error fetching job:', error.response?.data || error.message);
-        setError(error.response?.data?.message || 'Failed to fetch job details');
+        console.error(
+          "Error fetching job:",
+          error.response?.data || error.message,
+        );
+        setError(
+          error.response?.data?.message || "Failed to fetch job details",
+        );
       } finally {
         setLoading(false);
       }
@@ -66,7 +71,7 @@ const JobDetailsPage = () => {
             Back to Jobs
           </button>
           <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-            <p className="text-red-600 text-lg">{error || 'Job not found'}</p>
+            <p className="text-red-600 text-lg">{error || "Job not found"}</p>
           </div>
         </div>
       </div>
@@ -90,7 +95,9 @@ const JobDetailsPage = () => {
               <Briefcase className="text-green-600" size={32} />
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-black mb-2">{job.title}</h1>
+              <h1 className="text-3xl font-bold text-black mb-2">
+                {job.title}
+              </h1>
               <p className="text-xl text-gray-700 mb-3">{job.company}</p>
               <div className="flex flex-wrap gap-2">
                 <span className="flex items-center gap-1 px-3 py-1 bg-green-50 text-green-600 rounded-full text-sm font-medium">
@@ -108,19 +115,26 @@ const JobDetailsPage = () => {
           </div>
 
           <div className="border-t border-gray-200 pt-6 mb-6">
-            <h2 className="text-xl font-semibold text-green-600 mb-3">Job Description</h2>
-            <p className="text-gray-700 leading-relaxed mb-6">{job.description}</p>
+            <h2 className="text-xl font-semibold text-green-600 mb-3">
+              Job Description
+            </h2>
+            <p className="text-gray-700 leading-relaxed mb-6">
+              {job.description}
+            </p>
 
-            <h2 className="text-xl font-semibold text-green-600 mb-3">Required Skills</h2>
+            <h2 className="text-xl font-semibold text-green-600 mb-3">
+              Required Skills
+            </h2>
             <div className="flex flex-wrap gap-2 mb-6">
-              {job.requiredSkills && job.requiredSkills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="px-4 py-2 bg-green-50 text-green-600 rounded-md font-medium capitalize"
-                >
-                  {skill}
-                </span>
-              ))}
+              {job.requiredSkills &&
+                job.requiredSkills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="px-4 py-2 bg-green-50 text-green-600 rounded-md font-medium capitalize"
+                  >
+                    {skill}
+                  </span>
+                ))}
             </div>
 
             <h2 className="text-xl font-semibold text-green-600 mb-3">Track</h2>
@@ -128,7 +142,9 @@ const JobDetailsPage = () => {
 
             {job.tags && job.tags.length > 0 && (
               <>
-                <h2 className="text-xl font-semibold text-green-600 mb-3">Benefits</h2>
+                <h2 className="text-xl font-semibold text-green-600 mb-3">
+                  Benefits
+                </h2>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {job.tags.map((tag, index) => (
                     <span

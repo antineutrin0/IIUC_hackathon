@@ -2,10 +2,13 @@ import axios from "axios";
 
 export async function fetchRoadmap(userId, jobId) {
   try {
-    const response = await axios.post("http://localhost:8000/roadmap", {
-      userId,
-      jobId,
-    });
+    const response = await axios.post(
+      "https://iiuc-hackathon-backend.vercel.app/roadmap",
+      {
+        userId,
+        jobId,
+      },
+    );
 
     return response.data; // Axios returns parsed JSON automatically
   } catch (error) {

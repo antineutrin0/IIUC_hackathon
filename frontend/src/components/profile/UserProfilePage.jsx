@@ -1,40 +1,38 @@
-import { useState, useEffect } from 'react';
-import ProfileHeader from './ProfileHeader';
-import ProjectsSection from './ProjectSection';
-import EducationSection from './EducationSection';
-import SkillsSection from './SkillsSection';
-import LanguagesSection from './LanguagesSection';
-import EditProfileModal from './EditProfileModel';
-import EditProjectsModal from './EditProjectsModal';
-import EditEducationModal from './EditEducationModal';
-import EditSkillsModal from './EditSkillsModal';
-import EditLanguagesModal from './EditLanguagesModal';
-import EditCvModal from './EditCvModal';
-import { FileText, Loader2 } from 'lucide-react';
-import React from 'react';
-import { getData } from '@/context/userContext';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import { useState, useEffect } from "react";
+import ProfileHeader from "./ProfileHeader";
+import ProjectsSection from "./ProjectSection";
+import EducationSection from "./EducationSection";
+import SkillsSection from "./SkillsSection";
+import LanguagesSection from "./LanguagesSection";
+import EditProfileModal from "./EditProfileModel";
+import EditProjectsModal from "./EditProjectsModal";
+import EditEducationModal from "./EditEducationModal";
+import EditSkillsModal from "./EditSkillsModal";
+import EditLanguagesModal from "./EditLanguagesModal";
+import EditCvModal from "./EditCvModal";
+import { FileText, Loader2 } from "lucide-react";
+import React from "react";
+import { getData } from "@/context/userContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const demoProfile = {
-  _id: 'demo',
-  username: 'Demo User',
-  email: 'demo@example.com',
-  headline: 'Full-Stack Developer',
-  bio: 'This is a demo profile.',
-  availability: 'open_to_work',
+  _id: "demo",
+  username: "Demo User",
+  email: "demo@example.com",
+  headline: "Full-Stack Developer",
+  bio: "This is a demo profile.",
+  availability: "open_to_work",
   isPublic: true,
-  targetRoles: ['Full-Stack Engineer'],
-  skills: ['react', 'nodejs'],
-  languages: [{ name: 'English', proficiency: 'Fluent' }],
+  targetRoles: ["Full-Stack Engineer"],
+  skills: ["react", "nodejs"],
+  languages: [{ name: "English", proficiency: "Fluent" }],
   projects: [],
   education: [],
-  cvText: '',
-  cvLink: '',
+  cvText: "",
+  cvLink: "",
 };
-
-
 
 const UserProfilePage = () => {
   const { user, loading: userLoading } = getData();
@@ -53,30 +51,29 @@ const UserProfilePage = () => {
   const [error, setError] = useState(null);
 
   const handleUpdateCv = async (cvData) => {
-  try {
-    const token = localStorage.getItem("accessToken");
+    try {
+      const token = localStorage.getItem("accessToken");
 
-    const res = await axios.put(
-      "http://localhost:8000/user/profile/cv",
-      cvData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const res = await axios.put(
+        "https://iiuc-hackathon-backend.vercel.app/user/profile/cv",
+        cvData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         },
+      );
+
+      if (res.data.success) {
+        setProfile(res.data.profile);
+        toast.success("CV Updated Successfully");
       }
-    );
-
-    if (res.data.success) {
-       setProfile(res.data.profile);
-      toast.success("CV Updated Successfully");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update CV");
     }
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to update CV");
-  }
-};
-
+  };
 
   // Fetch user profile from backend
   useEffect(() => {
@@ -84,22 +81,25 @@ const UserProfilePage = () => {
       if (userLoading) return;
 
       if (!user) {
-        toast.error('Please login to view your profile');
-        navigate('/login');
+        toast.error("Please login to view your profile");
+        navigate("/login");
         return;
       }
 
       try {
         setLoading(true);
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem("accessToken");
         if (!token) {
-          navigate('/login');
+          navigate("/login");
           return;
         }
 
-        const res = await axios.get(`http://localhost:8000/user/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `https://iiuc-hackathon-backend.vercel.app/user/profile`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         if (res.data?.success && res.data.profile) {
           setProfile(res.data.profile);
@@ -108,9 +108,9 @@ const UserProfilePage = () => {
           setProfile(res.data?.profile || demoProfile);
         }
       } catch (err) {
-        console.error('Failed to fetch profile:', err);
-        setError('Failed to load profile data');
-        toast.error('Failed to load profile');
+        console.error("Failed to fetch profile:", err);
+        setError("Failed to load profile data");
+        toast.error("Failed to load profile");
       } finally {
         setLoading(false);
       }
@@ -126,33 +126,37 @@ const UserProfilePage = () => {
    */
   const handleSaveProfile = async (updatedData) => {
     try {
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem("accessToken");
       if (!token) {
-        toast.error('Not authenticated');
-        navigate('/login');
+        toast.error("Not authenticated");
+        navigate("/login");
         return;
       }
 
-      const res = await axios.put(`http://localhost:8000/user/profile`, updatedData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+      const res = await axios.put(
+        `https://iiuc-hackathon-backend.vercel.app/user/profile`,
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       // If backend returns updated profile, prefer that. Otherwise merge optimistic update.
       if (res.data?.success) {
         const serverProfile = res.data.profile || null;
-        setProfile(prev => (serverProfile ? serverProfile : { ...prev, ...updatedData }));
-        toast.success('Profile updated successfully');
-
-
+        setProfile((prev) =>
+          serverProfile ? serverProfile : { ...prev, ...updatedData },
+        );
+        toast.success("Profile updated successfully");
       } else {
-        toast.error(res.data?.message || 'Failed to update profile');
+        toast.error(res.data?.message || "Failed to update profile");
       }
     } catch (err) {
-      console.error('Profile update failed:', err);
-      toast.error('Failed to update profile');
+      console.error("Profile update failed:", err);
+      toast.error("Failed to update profile");
     }
   };
 
@@ -192,7 +196,7 @@ const UserProfilePage = () => {
         <ProfileHeader
           profile={profile}
           onEdit={() => setIsEditProfileOpen(true)}
-           onEditCv={() => setIsEditCv(true)}
+          onEditCv={() => setIsEditCv(true)}
         />
 
         {/* Two Column Layout */}
@@ -214,7 +218,10 @@ const UserProfilePage = () => {
 
           {/* Right Column */}
           <div className="lg:col-span-1">
-            <SkillsSection skills={profile.skills || []} onEdit={() => setIsEditSkillsOpen(true)} />
+            <SkillsSection
+              skills={profile.skills || []}
+              onEdit={() => setIsEditSkillsOpen(true)}
+            />
 
             <LanguagesSection
               languages={profile.languages || []}
@@ -223,7 +230,6 @@ const UserProfilePage = () => {
 
             {/* Additional Info Card */}
             <div className="bg-white rounded-lg shadow-sm p-6">
-              
               <h3 className="font-semibold text-black mb-3 flex items-center gap-2">
                 <FileText className="text-green-600" size={20} />
                 Profile Completion
@@ -234,7 +240,10 @@ const UserProfilePage = () => {
                   <span className="font-medium text-green-600">85%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-green-600 h-2 rounded-full" style={{ width: '85%' }}></div>
+                  <div
+                    className="bg-green-600 h-2 rounded-full"
+                    style={{ width: "85%" }}
+                  ></div>
                 </div>
                 <p className="text-sm text-gray-600 mt-3">
                   Add more projects and certifications to complete your profile!
@@ -299,13 +308,12 @@ const UserProfilePage = () => {
           }}
         />
 
-            <EditCvModal
-        isOpen={isEditCv}
-        onClose={() => setIsEditCv(false)}
-        profile={profile}
-        onSave={handleUpdateCv}
-      />
-
+        <EditCvModal
+          isOpen={isEditCv}
+          onClose={() => setIsEditCv(false)}
+          profile={profile}
+          onSave={handleUpdateCv}
+        />
       </div>
     </div>
   );

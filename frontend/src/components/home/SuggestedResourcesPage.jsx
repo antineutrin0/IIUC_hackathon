@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ChevronDown, Sparkles, BookOpen, TrendingUp, Award, Brain } from "lucide-react";
+import {
+  ChevronDown,
+  Sparkles,
+  BookOpen,
+  TrendingUp,
+  Award,
+  Brain,
+} from "lucide-react";
 import SuggestedResourceCard from "./SuggestedResourceCard";
 
 const SuggestedResourcesPage = () => {
@@ -8,7 +15,7 @@ const SuggestedResourcesPage = () => {
   const [filteredResources, setFilteredResources] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
   const [selectedResource, setSelectedResource] = useState(null);
-  const [sortBy, setSortBy] = useState('Best Match');
+  const [sortBy, setSortBy] = useState("Best Match");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -19,41 +26,53 @@ const SuggestedResourcesPage = () => {
       setError(null);
 
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem("accessToken");
         if (!token) {
-          throw new Error('Please login to view suggested resources');
+          throw new Error("Please login to view suggested resources");
         }
 
         // Fetch user profile
-        const profileRes = await axios.get('http://localhost:8000/user/profile', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const profileRes = await axios.get(
+          "https://iiuc-hackathon-backend.vercel.app/user/profile",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         const profile = profileRes.data.profile || profileRes.data;
         setUserProfile(profile);
 
         // Fetch all resources
-        const resourcesRes = await axios.get('http://localhost:8000/resource', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const resourcesRes = await axios.get(
+          "https://iiuc-hackathon-backend.vercel.app/resource",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         const allResources = resourcesRes.data.resources || resourcesRes.data;
-        
+
         // Score and sort resources based on user profile
-        const scoredResources = allResources.map(resource => {
-          const matchData = calculateMatchScore(resource, profile);
-          return {
-            ...resource,
-            matchScore: matchData.score,
-            matchDetails: matchData.details
-          };
-        }).sort((a, b) => b.matchScore - a.matchScore);
+        const scoredResources = allResources
+          .map((resource) => {
+            const matchData = calculateMatchScore(resource, profile);
+            return {
+              ...resource,
+              matchScore: matchData.score,
+              matchDetails: matchData.details,
+            };
+          })
+          .sort((a, b) => b.matchScore - a.matchScore);
 
         setResources(scoredResources);
         setFilteredResources(scoredResources);
       } catch (err) {
-        console.error('Error fetching data:', err);
-        setError(err.response?.data?.message || err.message || 'Failed to load suggested resources');
+        console.error("Error fetching data:", err);
+        setError(
+          err.response?.data?.message ||
+            err.message ||
+            "Failed to load suggested resources",
+        );
       } finally {
         setLoading(false);
       }
@@ -70,45 +89,57 @@ const SuggestedResourcesPage = () => {
       newSkills: [],
       careerMatch: false,
       educationMatch: false,
-      projectMatch: false
+      projectMatch: false,
     };
 
-    const userSkills = new Set((profile.skills || []).map(s => s.toLowerCase()));
-    const resourceSkills = (resource.relatedSkills || []).map(s => s.toLowerCase());
-    
+    const userSkills = new Set(
+      (profile.skills || []).map((s) => s.toLowerCase()),
+    );
+    const resourceSkills = (resource.relatedSkills || []).map((s) =>
+      s.toLowerCase(),
+    );
+
     // Skill matching - resources that match user's existing skills (for improvement)
-    const matchingSkills = resourceSkills.filter(skill => userSkills.has(skill));
+    const matchingSkills = resourceSkills.filter((skill) =>
+      userSkills.has(skill),
+    );
     details.improvementSkills = matchingSkills;
     score += matchingSkills.length * 8;
 
     // Skills to learn - resources with new skills user doesn't have yet
-    const newSkills = resourceSkills.filter(skill => !userSkills.has(skill));
+    const newSkills = resourceSkills.filter((skill) => !userSkills.has(skill));
     details.newSkills = newSkills.slice(0, 5); // Limit to 5 for display
     score += newSkills.length * 5;
 
     // Target roles matching
-    const userRoles = (profile.targetRoles || []).map(r => r.toLowerCase());
-    const resourceTitle = (resource.title || '').toLowerCase();
-    const resourceDesc = (resource.description || '').toLowerCase();
-    
-    if (userRoles.some(role => 
-      resourceTitle.includes(role) || 
-      resourceDesc.includes(role) ||
-      resourceSkills.some(skill => role.includes(skill))
-    )) {
+    const userRoles = (profile.targetRoles || []).map((r) => r.toLowerCase());
+    const resourceTitle = (resource.title || "").toLowerCase();
+    const resourceDesc = (resource.description || "").toLowerCase();
+
+    if (
+      userRoles.some(
+        (role) =>
+          resourceTitle.includes(role) ||
+          resourceDesc.includes(role) ||
+          resourceSkills.some((skill) => role.includes(skill)),
+      )
+    ) {
       score += 12;
       details.careerMatch = true;
     }
 
     // Education field matching
     const educationFields = (profile.education || [])
-      .map(edu => (edu.fieldOfStudy || '').toLowerCase())
+      .map((edu) => (edu.fieldOfStudy || "").toLowerCase())
       .filter(Boolean);
-    
-    if (educationFields.some(field => 
-      resourceTitle.includes(field) || 
-      resourceSkills.some(skill => field.includes(skill))
-    )) {
+
+    if (
+      educationFields.some(
+        (field) =>
+          resourceTitle.includes(field) ||
+          resourceSkills.some((skill) => field.includes(skill)),
+      )
+    ) {
       score += 10;
       details.educationMatch = true;
     }
@@ -116,25 +147,30 @@ const SuggestedResourcesPage = () => {
     // Project tech stack matching
     const projectTechStack = new Set(
       (profile.projects || [])
-        .flatMap(proj => proj.techStack || [])
-        .map(tech => tech.toLowerCase())
+        .flatMap((proj) => proj.techStack || [])
+        .map((tech) => tech.toLowerCase()),
     );
-    
-    const techMatches = resourceSkills.filter(skill => projectTechStack.has(skill));
+
+    const techMatches = resourceSkills.filter((skill) =>
+      projectTechStack.has(skill),
+    );
     if (techMatches.length > 0) {
       score += techMatches.length * 6;
       details.projectMatch = true;
     }
 
     // Prefer free resources if user is a student or unemployed
-    if ((profile.availability === 'student' || profile.availability === 'unemployed') && 
-        resource.cost === 'Free') {
+    if (
+      (profile.availability === "student" ||
+        profile.availability === "unemployed") &&
+      resource.cost === "Free"
+    ) {
       score += 5;
     }
 
     return {
       score: Math.max(0, Math.min(100, score)),
-      details
+      details,
     };
   };
 
@@ -142,15 +178,15 @@ const SuggestedResourcesPage = () => {
   useEffect(() => {
     let result = [...resources];
 
-    if (sortBy === 'Best Match') {
+    if (sortBy === "Best Match") {
       result.sort((a, b) => b.matchScore - a.matchScore);
-    } else if (sortBy === 'Free First') {
+    } else if (sortBy === "Free First") {
       result.sort((a, b) => {
-        if (a.cost === 'Free' && b.cost !== 'Free') return -1;
-        if (a.cost !== 'Free' && b.cost === 'Free') return 1;
+        if (a.cost === "Free" && b.cost !== "Free") return -1;
+        if (a.cost !== "Free" && b.cost === "Free") return 1;
         return b.matchScore - a.matchScore;
       });
-    } else if (sortBy === 'Newest') {
+    } else if (sortBy === "Newest") {
       result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
 
@@ -158,16 +194,24 @@ const SuggestedResourcesPage = () => {
   }, [sortBy, resources]);
 
   // Calculate statistics
-  const excellentMatches = filteredResources.filter(r => r.matchScore >= 60).length;
-  const goodMatches = filteredResources.filter(r => r.matchScore >= 40 && r.matchScore < 60).length;
-  const freeResources = filteredResources.filter(r => r.cost === 'Free').length;
+  const excellentMatches = filteredResources.filter(
+    (r) => r.matchScore >= 60,
+  ).length;
+  const goodMatches = filteredResources.filter(
+    (r) => r.matchScore >= 40 && r.matchScore < 60,
+  ).length;
+  const freeResources = filteredResources.filter(
+    (r) => r.cost === "Free",
+  ).length;
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Analyzing your learning path and finding perfect resources...</p>
+          <p className="text-gray-600 font-medium">
+            Analyzing your learning path and finding perfect resources...
+          </p>
         </div>
       </div>
     );
@@ -193,9 +237,9 @@ const SuggestedResourcesPage = () => {
 
   if (selectedResource) {
     return (
-      <CourseDetailsPage 
-        resource={selectedResource} 
-        onBack={() => setSelectedResource(null)} 
+      <CourseDetailsPage
+        resource={selectedResource}
+        onBack={() => setSelectedResource(null)}
       />
     );
   }
@@ -208,7 +252,9 @@ const SuggestedResourcesPage = () => {
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r bg-green-100 text-black rounded-full mb-4 shadow-lg">
               <Brain size={20} />
-              <span className="font-semibold">AI-Powered Learning Recommendations</span>
+              <span className="font-semibold">
+                AI-Powered Learning Recommendations
+              </span>
             </div>
             <h1 className="text-4xl font-bold text-gray-800 mb-3">
               Your Personalized Learning Path
@@ -226,7 +272,9 @@ const SuggestedResourcesPage = () => {
                   <BookOpen className="text-blue-600" size={24} />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-800">{filteredResources.length}</p>
+                  <p className="text-2xl font-bold text-gray-800">
+                    {filteredResources.length}
+                  </p>
                   <p className="text-sm text-gray-600">Total Resources</p>
                 </div>
               </div>
@@ -238,8 +286,12 @@ const SuggestedResourcesPage = () => {
                   <TrendingUp className="text-green-600" size={24} />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-800">{excellentMatches}</p>
-                  <p className="text-sm text-gray-600">Excellent Matches (60%+)</p>
+                  <p className="text-2xl font-bold text-gray-800">
+                    {excellentMatches}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Excellent Matches (60%+)
+                  </p>
                 </div>
               </div>
             </div>
@@ -250,7 +302,9 @@ const SuggestedResourcesPage = () => {
                   <Award className="text-purple-600" size={24} />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-800">{goodMatches}</p>
+                  <p className="text-2xl font-bold text-gray-800">
+                    {goodMatches}
+                  </p>
                   <p className="text-sm text-gray-600">Good Matches (40-59%)</p>
                 </div>
               </div>
@@ -262,7 +316,9 @@ const SuggestedResourcesPage = () => {
                   <Sparkles className="text-yellow-600" size={24} />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-800">{freeResources}</p>
+                  <p className="text-2xl font-bold text-gray-800">
+                    {freeResources}
+                  </p>
                   <p className="text-sm text-gray-600">Free Resources</p>
                 </div>
               </div>
@@ -279,32 +335,40 @@ const SuggestedResourcesPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-semibold text-blue-600">Current Skills:</span>{' '}
-                    {userProfile.skills?.length > 0 
-                      ? userProfile.skills.slice(0, 4).join(', ') + (userProfile.skills.length > 4 ? '...' : '')
-                      : 'No skills added yet'}
+                    <span className="font-semibold text-blue-600">
+                      Current Skills:
+                    </span>{" "}
+                    {userProfile.skills?.length > 0
+                      ? userProfile.skills.slice(0, 4).join(", ") +
+                        (userProfile.skills.length > 4 ? "..." : "")
+                      : "No skills added yet"}
                   </p>
                 </div>
                 {userProfile.targetRoles?.length > 0 && (
                   <div>
                     <p className="text-sm text-gray-600">
-                      <span className="font-semibold text-purple-600">Career Goals:</span>{' '}
-                      {userProfile.targetRoles.join(', ')}
+                      <span className="font-semibold text-purple-600">
+                        Career Goals:
+                      </span>{" "}
+                      {userProfile.targetRoles.join(", ")}
                     </p>
                   </div>
                 )}
-                {userProfile.education?.length > 0 && userProfile.education[0].fieldOfStudy && (
-                  <div>
-                    <p className="text-sm text-gray-600">
-                      <span className="font-semibold text-green-600">Study Field:</span>{' '}
-                      {userProfile.education[0].fieldOfStudy}
-                    </p>
-                  </div>
-                )}
+                {userProfile.education?.length > 0 &&
+                  userProfile.education[0].fieldOfStudy && (
+                    <div>
+                      <p className="text-sm text-gray-600">
+                        <span className="font-semibold text-green-600">
+                          Study Field:
+                        </span>{" "}
+                        {userProfile.education[0].fieldOfStudy}
+                      </p>
+                    </div>
+                  )}
               </div>
             </div>
           )}
-          
+
           {/* Sorting Controls */}
           <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow-md">
             <div className="flex items-center gap-4">
@@ -319,13 +383,13 @@ const SuggestedResourcesPage = () => {
                   <option>Free First</option>
                   <option>Newest</option>
                 </select>
-                <ChevronDown 
-                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-blue-600" 
-                  size={20} 
+                <ChevronDown
+                  className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-blue-600"
+                  size={20}
                 />
               </div>
             </div>
-            
+
             <span className="text-gray-700 font-medium">
               {filteredResources.length} resources found
             </span>
@@ -349,7 +413,7 @@ const SuggestedResourcesPage = () => {
               </div>
             </div>
           ) : (
-            filteredResources.map(resource => (
+            filteredResources.map((resource) => (
               <SuggestedResourceCard
                 key={resource._id}
                 resource={resource}

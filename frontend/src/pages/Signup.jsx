@@ -39,13 +39,13 @@ const Signup = () => {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        `http://localhost:8000/user/register`,
+        `https://iiuc-hackathon-backend.vercel.app/user/register`,
         formData,
         {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       if (res.data.success) {
         navigate("/verify");

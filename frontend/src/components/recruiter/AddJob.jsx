@@ -35,20 +35,19 @@ const AddJob = ({ onJobAdded }) => {
       };
       console.log("Submitting job data:", formattedData);
 
-    const res = await axios.post(
-    "http://localhost:8000/recruiter/jobs",
-    formattedData,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    }
-  );
+      const res = await axios.post(
+        "https://iiuc-hackathon-backend.vercel.app/recruiter/jobs",
+        formattedData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        },
+      );
 
-  const data = res.data; 
-  console.log("Job added:", data);
-      
+      const data = res.data;
+      console.log("Job added:", data);
 
       alert("✅ Job posted successfully!");
       setJobData({

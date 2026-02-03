@@ -9,16 +9,18 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const loadUser = async () => {
-
       const token = localStorage.getItem("accessToken");
-       console.log("token from loaduser",token);
+      console.log("token from loaduser", token);
       if (token) {
         try {
-          const res = await axios.get(`http://localhost:8000/user/profile/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
+          const res = await axios.get(
+            `https://iiuc-hackathon-backend.vercel.app/user/profile/me`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
           if (res.data.user) {
             setUser(res.data.user);
           }

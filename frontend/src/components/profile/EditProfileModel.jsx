@@ -1,48 +1,49 @@
 import { useState } from "react";
-import Modal  from "./Modal";
+import Modal from "./Modal";
 import { Save } from "lucide-react";
 import axios from "axios";
 
 const EditProfileModal = ({ isOpen, onClose, profile, onSave }) => {
-
   console.log("Editing profile:", profile);
   const [formData, setFormData] = useState({
     headline: profile.headline,
     bio: profile.bio,
     availability: profile.availability,
     isPublic: profile.isPublic,
-    targetRoles: profile.targetRoles.join(', ')
+    targetRoles: profile.targetRoles.join(", "),
   });
 
-const handleSave = async () => {
-  try {
-    const updatedData = {
-      ...formData,
-      targetRoles: formData.targetRoles
-        .split(',')
-        .map(role => role.trim())
-        .filter(Boolean),
-    };
+  const handleSave = async () => {
+    try {
+      const updatedData = {
+        ...formData,
+        targetRoles: formData.targetRoles
+          .split(",")
+          .map((role) => role.trim())
+          .filter(Boolean),
+      };
 
-    const response = await axios.put(
-      'http://localhost:8000/user/profile',
-      updatedData,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      const response = await axios.put(
+        "https://iiuc-hackathon-backend.vercel.app/user/profile",
+        updatedData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         },
-      }
-    );
+      );
 
-    console.log('Profile updated successfully:', response.data);
-    onSave(response.data);
-    onClose();
-  } catch (error) {
-    console.error('Failed to update profile:', error.response?.data || error.message);
-  }
-};
-
+      console.log("Profile updated successfully:", response.data);
+      onSave(response.data);
+      onClose();
+    } catch (error) {
+      console.error(
+        "Failed to update profile:",
+        error.response?.data || error.message,
+      );
+    }
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Edit Profile">
@@ -54,7 +55,9 @@ const handleSave = async () => {
           <input
             type="text"
             value={formData.headline}
-            onChange={(e) => setFormData({ ...formData, headline: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, headline: e.target.value })
+            }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
             placeholder="e.g., Full Stack Developer"
           />
@@ -80,7 +83,9 @@ const handleSave = async () => {
           <input
             type="text"
             value={formData.targetRoles}
-            onChange={(e) => setFormData({ ...formData, targetRoles: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, targetRoles: e.target.value })
+            }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
             placeholder="e.g., Software Engineer, Full Stack Developer"
           />
@@ -92,7 +97,9 @@ const handleSave = async () => {
           </label>
           <select
             value={formData.availability}
-            onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, availability: e.target.value })
+            }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-transparent"
           >
             <option value="student">Student</option>
@@ -109,7 +116,9 @@ const handleSave = async () => {
             type="checkbox"
             id="isPublic"
             checked={formData.isPublic}
-            onChange={(e) => setFormData({ ...formData, isPublic: e.target.checked })}
+            onChange={(e) =>
+              setFormData({ ...formData, isPublic: e.target.checked })
+            }
             className="mr-2 accent-green-600"
           />
           <label htmlFor="isPublic" className="text-sm text-black">

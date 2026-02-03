@@ -20,17 +20,17 @@ const EditCvModal = ({ isOpen, onClose, cvText = "", cvLink = "", onSave }) => {
   }, [isOpen, cvText, cvLink]);
 
   const handleSave = async (e) => {
-    setText(e.target.value );
-    setLink(e.target.value );
-   const newtext= text
+    setText(e.target.value);
+    setLink(e.target.value);
+    const newtext = text
       .replace(/[^a-zA-Z0-9 .,;:!?@()\n\r]/g, "")
       .replace(/\s+/g, " ")
-      .trim()
+      .trim();
     console.log("Saving CV data:", { newtext, link });
 
     try {
       const res = await axios.post(
-        `http://localhost:8000/profile/update-from-cv`,
+        `https://iiuc-hackathon-backend.vercel.app/profile/update-from-cv`,
         {
           cvText: text,
           userId: user._id,
@@ -40,17 +40,20 @@ const EditCvModal = ({ isOpen, onClose, cvText = "", cvLink = "", onSave }) => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
-      if(res.data){
-        navigate('/user/profile');
+      if (res.data) {
+        navigate("/user/profile");
       }
 
       console.log("Profile updated:", res.data);
       onSave?.(); // optional callback
     } catch (err) {
-      console.error("Error updating profile:", err.response?.data || err.message);
+      console.error(
+        "Error updating profile:",
+        err.response?.data || err.message,
+      );
     }
   };
 

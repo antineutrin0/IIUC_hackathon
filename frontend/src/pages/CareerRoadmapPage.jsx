@@ -40,9 +40,9 @@ export default function CareerRoadmapPage() {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:8000/career-roadmap/",
+        "https://iiuc-hackathon-backend.vercel.app/career-roadmap/",
         { targetJob, timeframe },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       setRoadmap(res.data);
@@ -95,8 +95,10 @@ export default function CareerRoadmapPage() {
       {/* ------------------------- SCREEN VERSION (Beautiful Modern UI) --------------------------- */}
 
       <div className="screen-only p-6 max-w-5xl mx-auto space-y-10">
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
           <h1 className="text-4xl font-bold text-green-700 flex items-center gap-2">
             <Brain className="w-8 h-8" /> Career Roadmap →{" "}
             <span className="text-blue-600">{roadmap.jobTitle}</span>
@@ -117,7 +119,9 @@ export default function CareerRoadmapPage() {
             <p>{roadmap.overview.summary}</p>
 
             <div>
-              <h3 className="font-semibold text-blue-700">Technologies to Learn</h3>
+              <h3 className="font-semibold text-blue-700">
+                Technologies to Learn
+              </h3>
               <ul className="list-disc pl-6">
                 {roadmap.overview.technologiesToLearn.map((t) => (
                   <li key={t}>{t}</li>
@@ -189,7 +193,9 @@ export default function CareerRoadmapPage() {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-blue-700">Technologies</h3>
+                    <h3 className="font-semibold text-blue-700">
+                      Technologies
+                    </h3>
                     <ul className="list-disc pl-6">
                       {phase.technologies.map((t) => (
                         <li key={t}>{t}</li>
@@ -198,7 +204,9 @@ export default function CareerRoadmapPage() {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-blue-700">Project Ideas</h3>
+                    <h3 className="font-semibold text-blue-700">
+                      Project Ideas
+                    </h3>
                     <ul className="list-disc pl-6">
                       {phase.projectIdeas.map((p) => (
                         <li key={p}>{p}</li>
@@ -207,7 +215,9 @@ export default function CareerRoadmapPage() {
                   </div>
 
                   <p>
-                    <strong className="text-green-700">Expected Outcome:</strong>{" "}
+                    <strong className="text-green-700">
+                      Expected Outcome:
+                    </strong>{" "}
                     {phase.expectedOutcome}
                   </p>
                 </CardContent>
@@ -233,7 +243,9 @@ export default function CareerRoadmapPage() {
             </p>
 
             <div>
-              <h3 className="font-semibold text-blue-700">What to Have Ready</h3>
+              <h3 className="font-semibold text-blue-700">
+                What to Have Ready
+              </h3>
               <ul className="list-disc pl-6">
                 {roadmap.applicationGuidance.whatToHaveReady.map((a) => (
                   <li key={a}>{a}</li>
@@ -255,17 +267,23 @@ export default function CareerRoadmapPage() {
         {/* Extra Recommendations */}
         <Card className="border-l-4 border-yellow-400 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-yellow-600">Extra Recommendations</CardTitle>
+            <CardTitle className="text-yellow-600">
+              Extra Recommendations
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <h3 className="font-semibold text-blue-700">Learning Resources</h3>
+              <h3 className="font-semibold text-blue-700">
+                Learning Resources
+              </h3>
               <ul className="list-disc pl-6">
-                {roadmap.extraRecommendations.learningResources.map((r, idx) => (
-                  <li key={idx}>
-                    {r.title} ({r.type}) – {r.platform}
-                  </li>
-                ))}
+                {roadmap.extraRecommendations.learningResources.map(
+                  (r, idx) => (
+                    <li key={idx}>
+                      {r.title} ({r.type}) – {r.platform}
+                    </li>
+                  ),
+                )}
               </ul>
             </div>
 
@@ -298,11 +316,12 @@ export default function CareerRoadmapPage() {
       {/* ------------------------- PRINT VERSION (Minimal, Error-Free) --------------------------- */}
 
       <div className="print-only p-6 text-black max-w-5xl mx-auto">
-
         <h1 className="text-3xl font-bold mb-2">
           Career Roadmap → {roadmap.jobTitle}
         </h1>
-        <p className="mb-6">Total Duration: {roadmap.totalDurationWeeks} weeks</p>
+        <p className="mb-6">
+          Total Duration: {roadmap.totalDurationWeeks} weeks
+        </p>
 
         <h2 className="text-xl font-bold">Overview</h2>
         <p>{roadmap.overview.summary}</p>
@@ -361,7 +380,8 @@ export default function CareerRoadmapPage() {
         <h2 className="text-xl font-bold mt-8">Application Guidance</h2>
 
         <p>
-          Recommended start week: {roadmap.applicationGuidance.recommendedStartWeek}
+          Recommended start week:{" "}
+          {roadmap.applicationGuidance.recommendedStartWeek}
         </p>
 
         <h3 className="font-semibold mt-4">What to Have Ready</h3>

@@ -27,7 +27,7 @@ import { getData } from "@/context/userContext";
 const AiJobCompare = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();
-  const {user} = getData();
+  const { user } = getData();
   const userId = user?._id;
 
   const [data, setData] = useState(null);
@@ -39,7 +39,10 @@ const AiJobCompare = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.post("http://localhost:8000/compare", { userId, jobId });
+      const res = await axios.post(
+        "https://iiuc-hackathon-backend.vercel.app/compare",
+        { userId, jobId },
+      );
       setData(res.data);
     } catch (err) {
       console.error(err);
@@ -59,7 +62,9 @@ const AiJobCompare = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-12 h-12 animate-spin text-blue-600" />
-          <div className="text-gray-600">Analyzing job & profile — AI doing the heavy lifting...</div>
+          <div className="text-gray-600">
+            Analyzing job & profile — AI doing the heavy lifting...
+          </div>
         </div>
       </div>
     );
@@ -104,15 +109,23 @@ const AiJobCompare = () => {
     job: Number(radar.job[i] ?? 0),
   }));
 
-  const gapData = gap.labels.map((label, i) => ({ skill: label, value: Number(gap.values[i] ?? 0) }));
+  const gapData = gap.labels.map((label, i) => ({
+    skill: label,
+    value: Number(gap.values[i] ?? 0),
+  }));
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <motion.header initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.header
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold">AI Job Comparison</h1>
-            <p className="text-gray-600 mt-1">Deep insights & visual breakdown of fit</p>
+            <p className="text-gray-600 mt-1">
+              Deep insights & visual breakdown of fit
+            </p>
           </div>
 
           <div className="flex items-center gap-4">
@@ -142,16 +155,28 @@ const AiJobCompare = () => {
 
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-4 bg-green-50 rounded-lg border">
-              <h3 className="font-semibold text-green-700 mb-2">Top Strengths</h3>
+              <h3 className="font-semibold text-green-700 mb-2">
+                Top Strengths
+              </h3>
               <ul className="list-disc pl-5 text-gray-700">
-                {strengths.length ? strengths.map((s, i) => <li key={i}>{s}</li>) : <li>No strengths detected</li>}
+                {strengths.length ? (
+                  strengths.map((s, i) => <li key={i}>{s}</li>)
+                ) : (
+                  <li>No strengths detected</li>
+                )}
               </ul>
             </div>
 
             <div className="p-4 bg-red-50 rounded-lg border">
-              <h3 className="font-semibold text-red-700 mb-2">Weaknesses / Gaps</h3>
+              <h3 className="font-semibold text-red-700 mb-2">
+                Weaknesses / Gaps
+              </h3>
               <ul className="list-disc pl-5 text-gray-700">
-                {weaknesses.length ? weaknesses.map((w, i) => <li key={i}>{w}</li>) : <li>No weaknesses detected</li>}
+                {weaknesses.length ? (
+                  weaknesses.map((w, i) => <li key={i}>{w}</li>)
+                ) : (
+                  <li>No weaknesses detected</li>
+                )}
               </ul>
             </div>
           </div>
@@ -166,12 +191,16 @@ const AiJobCompare = () => {
         <aside className="bg-white p-6 rounded-xl shadow flex flex-col gap-4">
           <div>
             <h4 className="text-sm text-gray-500">Skills matched</h4>
-            <div className="text-2xl font-bold mt-1">{(data.skillMatch || []).length}</div>
+            <div className="text-2xl font-bold mt-1">
+              {(data.skillMatch || []).length}
+            </div>
           </div>
 
           <div>
             <h4 className="text-sm text-gray-500">Missing skills</h4>
-            <div className="text-2xl font-bold mt-1">{(data.missingSkills || []).length}</div>
+            <div className="text-2xl font-bold mt-1">
+              {(data.missingSkills || []).length}
+            </div>
           </div>
 
           <div>
@@ -179,7 +208,12 @@ const AiJobCompare = () => {
             <div className="text-2xl font-bold mt-1">{strengths.length}</div>
           </div>
 
-          <button onClick={() => fetch("#")} className="mt-auto text-sm text-gray-500 underline">View raw AI output</button>
+          <button
+            onClick={() => fetch("#")}
+            className="mt-auto text-sm text-gray-500 underline"
+          >
+            View raw AI output
+          </button>
         </aside>
       </section>
 
@@ -194,14 +228,28 @@ const AiJobCompare = () => {
                 <RadarChart data={radarData} outerRadius={120}>
                   <PolarGrid />
                   <PolarAngleAxis dataKey="skill" />
-                  <Radar name="You" dataKey="user" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.6} />
-                  <Radar name="Job" dataKey="job" stroke="#ef4444" fill="#ef4444" fillOpacity={0.4} />
+                  <Radar
+                    name="You"
+                    dataKey="user"
+                    stroke="#3b82f6"
+                    fill="#3b82f6"
+                    fillOpacity={0.6}
+                  />
+                  <Radar
+                    name="Job"
+                    dataKey="job"
+                    stroke="#ef4444"
+                    fill="#ef4444"
+                    fillOpacity={0.4}
+                  />
                   <Legend />
                 </RadarChart>
               </ResponsiveContainer>
             </div>
           ) : (
-            <div className="text-gray-500">No radar data available for this job/profile.</div>
+            <div className="text-gray-500">
+              No radar data available for this job/profile.
+            </div>
           )}
         </div>
 
@@ -220,14 +268,18 @@ const AiJobCompare = () => {
               </ResponsiveContainer>
             </div>
           ) : (
-            <div className="text-gray-500">No gap data available — AI could not quantify missing skills.</div>
+            <div className="text-gray-500">
+              No gap data available — AI could not quantify missing skills.
+            </div>
           )}
         </div>
       </section>
 
       {/* footer insights */}
       <section className="mt-8 bg-white p-6 rounded-xl shadow">
-        <h3 className="text-lg font-semibold mb-3">AI Insights & Actionables</h3>
+        <h3 className="text-lg font-semibold mb-3">
+          AI Insights & Actionables
+        </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 border rounded-lg">
@@ -252,11 +304,13 @@ const AiJobCompare = () => {
 
           <div className="p-4 border rounded-lg">
             <h4 className="font-semibold">Communication Note</h4>
-            <p className="mt-2 text-gray-700">Use the AI summary when contacting recruiters — shorten it to 2 lines and highlight projects that match required skills.</p>
+            <p className="mt-2 text-gray-700">
+              Use the AI summary when contacting recruiters — shorten it to 2
+              lines and highlight projects that match required skills.
+            </p>
           </div>
         </div>
       </section>
-
     </div>
   );
 };

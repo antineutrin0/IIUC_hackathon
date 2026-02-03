@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { Briefcase, Clock, TrendingUp } from 'lucide-react';
-import React, { useState } from 'react';
+import axios from "axios";
+import { Briefcase, Clock, TrendingUp } from "lucide-react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const JobCard = ({ job }) => {
@@ -9,35 +9,39 @@ const JobCard = ({ job }) => {
   const navigate = useNavigate();
 
   const getTimeAgo = (date) => {
-    const days = Math.floor((new Date() - new Date(date)) / (1000 * 60 * 60 * 24));
-    if (days === 0) return 'Today';
-    if (days === 1) return 'Yesterday';
+    const days = Math.floor(
+      (new Date() - new Date(date)) / (1000 * 60 * 60 * 24),
+    );
+    if (days === 0) return "Today";
+    if (days === 1) return "Yesterday";
     return `${days} days ago`;
   };
 
   const handleApply = async (e) => {
     e.stopPropagation(); // Prevent event bubbling
-    
+
     if (isApplying || isApplied) return; // Prevent multiple clicks
-    
+
     try {
       setIsApplied(true);
       const res = await axios.put(
-        'http://localhost:8000/jobs/addjob',
+        "https://iiuc-hackathon-backend.vercel.app/jobs/addjob",
         { jobId: job._id },
         {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            'Content-Type': 'application/json'
-          }
-        }
+            "Content-Type": "application/json",
+          },
+        },
       );
       console.log("Applied for job:", res.data);
-      
     } catch (error) {
-      console.error("Error applying for job:", error.response?.data || error.message);
+      console.error(
+        "Error applying for job:",
+        error.response?.data || error.message,
+      );
       // alert(error.response?.data?.message || "Failed to apply for job");
-    } 
+    }
   };
 
   const handleLearnMore = (e) => {
@@ -81,7 +85,9 @@ const JobCard = ({ job }) => {
         </span>
       </div>
 
-      <p className="text-gray-700 text-sm mb-4 line-clamp-2">{job.description}</p>
+      <p className="text-gray-700 text-sm mb-4 line-clamp-2">
+        {job.description}
+      </p>
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 text-sm text-gray-600">
@@ -97,23 +103,23 @@ const JobCard = ({ job }) => {
 
         <div className="flex gap-2">
           {isApplied ? (
-            <button 
+            <button
               className="px-4 py-2 bg-yellow-600 text-white rounded-md cursor-not-allowed text-sm font-medium"
               disabled
             >
               Applied
             </button>
           ) : (
-            <button 
-              onClick={handleApply} 
+            <button
+              onClick={handleApply}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isApplying}
             >
-              {isApplying ? 'Applying...' : 'Apply now'}
+              {isApplying ? "Applying..." : "Apply now"}
             </button>
           )}
-          <button 
-            onClick={handleLearnMore}  
+          <button
+            onClick={handleLearnMore}
             className="px-4 py-2 border border-gray-300 text-black rounded-md hover:bg-gray-50 transition-colors text-sm"
           >
             Learn more

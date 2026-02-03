@@ -1,6 +1,7 @@
 # IIUC Hackathon Project: Next Step
 
 ## Project Overview
+
 **Next Step** is a comprehensive career development and job matching platform designed to help youth manage their skills, discover job opportunities, and access personalized learning resources. The platform uses AI-powered recommendations to create tailored career roadmaps and match users with suitable jobs.
 
 ## 🌟 Key Features
@@ -17,6 +18,7 @@
 ## 🛠 Tech Stack
 
 ### Frontend
+
 - **Framework:** React 19.1.1
 - **Routing:** React Router DOM 7.8.0
 - **Styling:** Tailwind CSS 4.1.11
@@ -26,6 +28,7 @@
 - **HTTP Client:** Axios 1.11.0
 
 ### Backend
+
 - **Runtime:** Node.js
 - **Framework:** Express 5.1.0
 - **Database:** MongoDB with Mongoose 8.17.0
@@ -96,7 +99,7 @@ npm run seed
 npm run dev
 ```
 
-The backend will run on `http://localhost:8000`
+The backend will run on `https://iiuc-hackathon-backend.vercel.app`
 
 ### 3. Frontend Setup
 
@@ -111,8 +114,9 @@ The frontend will run on `http://localhost:5173`
 ## 📚 API Documentation
 
 ### Base URL
+
 ```
-http://localhost:8000/api
+https://iiuc-hackathon-backend.vercel.app/api
 ```
 
 ---
@@ -122,11 +126,13 @@ http://localhost:8000/api
 **Base Path:** `/api/user`
 
 ### 1. Register User
+
 **POST** `/register`
 
 Register a new user account.
 
 **Request Body:**
+
 ```json
 {
   "username": "john_doe",
@@ -137,11 +143,13 @@ Register a new user account.
 ```
 
 **User Types:**
+
 - `general` - Regular job seeker
 - `recruiter` - Company recruiter
 - `course_provider` - Learning resource provider
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -152,11 +160,13 @@ Register a new user account.
 ---
 
 ### 2. Verify Email
+
 **POST** `/verify`
 
 Verify email with OTP code sent during registration.
 
 **Request Body:**
+
 ```json
 {
   "email": "john@example.com",
@@ -165,6 +175,7 @@ Verify email with OTP code sent during registration.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -182,11 +193,13 @@ Verify email with OTP code sent during registration.
 ---
 
 ### 3. Login
+
 **POST** `/login`
 
 Login to existing account.
 
 **Request Body:**
+
 ```json
 {
   "email": "john@example.com",
@@ -195,6 +208,7 @@ Login to existing account.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -212,16 +226,19 @@ Login to existing account.
 ---
 
 ### 4. Logout
+
 **POST** `/logout`
 
 Logout the current user.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -232,11 +249,13 @@ Authorization: Bearer <token>
 ---
 
 ### 5. Forgot Password
+
 **POST** `/forgot-password`
 
 Request password reset OTP.
 
 **Request Body:**
+
 ```json
 {
   "email": "john@example.com"
@@ -244,6 +263,7 @@ Request password reset OTP.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -254,14 +274,17 @@ Request password reset OTP.
 ---
 
 ### 6. Verify OTP
+
 **POST** `/verify-otp/:email`
 
 Verify the OTP for password reset.
 
 **URL Parameters:**
+
 - `email` - User's email address
 
 **Request Body:**
+
 ```json
 {
   "otp": "123456"
@@ -269,6 +292,7 @@ Verify the OTP for password reset.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -279,14 +303,17 @@ Verify the OTP for password reset.
 ---
 
 ### 7. Change Password
+
 **POST** `/change-password/:email`
 
 Reset password after OTP verification.
 
 **URL Parameters:**
+
 - `email` - User's email address
 
 **Request Body:**
+
 ```json
 {
   "newPassword": "NewSecurePass123"
@@ -294,6 +321,7 @@ Reset password after OTP verification.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -309,16 +337,19 @@ Reset password after OTP verification.
 **Authentication Required:** Yes (General users only)
 
 ### 1. Get Current User
+
 **GET** `/me`
 
 Get currently logged-in user details.
 
 **Headers:**
+
 ```
 Authorization: Bearer <token>
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -334,11 +365,13 @@ Authorization: Bearer <token>
 ---
 
 ### 2. Get User Profile
+
 **GET** `/`
 
 Get the logged-in user's profile.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -364,11 +397,13 @@ Get the logged-in user's profile.
 ---
 
 ### 3. Create Profile
+
 **POST** `/`
 
 Create a new user profile (first-time setup).
 
 **Request Body:**
+
 ```json
 {
   "skills": ["javascript", "react", "node.js", "mongodb"],
@@ -412,6 +447,7 @@ Create a new user profile (first-time setup).
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -422,6 +458,7 @@ Create a new user profile (first-time setup).
 ---
 
 ### 4. Update Profile
+
 **PUT** `/`
 
 Update existing user profile.
@@ -429,6 +466,7 @@ Update existing user profile.
 **Request Body:** (Same structure as Create Profile - all fields optional)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -439,11 +477,13 @@ Update existing user profile.
 ---
 
 ### 5. Add Applied Job
+
 **PUT** `/addjobs`
 
 Track jobs that user has applied to.
 
 **Request Body:**
+
 ```json
 {
   "jobId": "507f1f77bcf86cd799439013"
@@ -451,6 +491,7 @@ Track jobs that user has applied to.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -461,11 +502,13 @@ Track jobs that user has applied to.
 ---
 
 ### 6. Upload CV Text
+
 **POST** `/cv`
 
 Save CV content as text.
 
 **Request Body:**
+
 ```json
 {
   "cvText": "Your CV content here..."
@@ -473,6 +516,7 @@ Save CV content as text.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -484,11 +528,13 @@ Save CV content as text.
 ---
 
 ### 7. Update CV Link
+
 **PUT** `/cvLink`
 
 Save link to CV file (e.g., Cloudinary URL).
 
 **Request Body:**
+
 ```json
 {
   "cvLink": "https://res.cloudinary.com/demo/image/upload/cv.pdf"
@@ -496,6 +542,7 @@ Save link to CV file (e.g., Cloudinary URL).
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -511,11 +558,13 @@ Save link to CV file (e.g., Cloudinary URL).
 **Base Path:** `/api/jobs`
 
 ### 1. List All Jobs
+
 **GET** `/`
 
 Get list of jobs with optional filters.
 
 **Query Parameters:**
+
 - `track` - Filter by career track (e.g., "Web Development")
 - `location` - Filter by location
 - `type` - Filter by job type (Internship, Part-time, Full-time, Freelance)
@@ -524,11 +573,13 @@ Get list of jobs with optional filters.
 - `skip` - Number of results to skip (for pagination)
 
 **Example Request:**
+
 ```
 GET /api/jobs?track=Web Development&type=Full-time&limit=20&skip=0
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -561,14 +612,17 @@ GET /api/jobs?track=Web Development&type=Full-time&limit=20&skip=0
 ---
 
 ### 2. Get Job Details
+
 **GET** `/:id`
 
 Get detailed information about a specific job.
 
 **URL Parameters:**
+
 - `id` - Job ID
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -596,6 +650,7 @@ Get detailed information about a specific job.
 ---
 
 ### 3. Get Recommended Jobs
+
 **GET** `/recommend`
 
 Get personalized job recommendations based on user profile.
@@ -603,6 +658,7 @@ Get personalized job recommendations based on user profile.
 **Authentication Required:** Yes
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -621,6 +677,7 @@ Get personalized job recommendations based on user profile.
 ```
 
 **Match Score Calculation:**
+
 - +10 points per matched skill
 - +5 points if job track matches user's preferred track
 - -5 points if experience level mismatch is > 1 level
@@ -628,6 +685,7 @@ Get personalized job recommendations based on user profile.
 ---
 
 ### 4. Apply to Job
+
 **POST** `/:id/apply`
 
 Apply to a specific job.
@@ -635,9 +693,11 @@ Apply to a specific job.
 **Authentication Required:** Yes
 
 **URL Parameters:**
+
 - `id` - Job ID
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -653,6 +713,7 @@ Apply to a specific job.
 ---
 
 ### 5. Track Job Application
+
 **PUT** `/addjob`
 
 Add job to user's applied jobs list.
@@ -660,6 +721,7 @@ Add job to user's applied jobs list.
 **Authentication Required:** Yes
 
 **Request Body:**
+
 ```json
 {
   "jobId": "507f1f77bcf86cd799439013"
@@ -667,6 +729,7 @@ Add job to user's applied jobs list.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -682,11 +745,13 @@ Add job to user's applied jobs list.
 **Authentication Required:** Yes (Recruiter users only)
 
 ### 1. Get Recruiter Dashboard
+
 **GET** `/dashboard`
 
 Get recruiter profile and posted jobs.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -705,11 +770,13 @@ Get recruiter profile and posted jobs.
 ---
 
 ### 2. Create Recruiter Profile
+
 **POST** `/dashboard`
 
 Create recruiter profile (one-time setup).
 
 **Request Body:**
+
 ```json
 {
   "companyName": "Tech Corp",
@@ -720,6 +787,7 @@ Create recruiter profile (one-time setup).
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -730,11 +798,13 @@ Create recruiter profile (one-time setup).
 ---
 
 ### 3. Update Recruiter Profile
+
 **PUT** `/dashboard`
 
 Update recruiter profile information.
 
 **Request Body:**
+
 ```json
 {
   "companyName": "Tech Corp Inc.",
@@ -744,6 +814,7 @@ Update recruiter profile information.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -754,11 +825,13 @@ Update recruiter profile information.
 ---
 
 ### 4. Get Posted Jobs
+
 **GET** `/jobs`
 
 Get all jobs posted by this recruiter.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -769,11 +842,13 @@ Get all jobs posted by this recruiter.
 ---
 
 ### 5. Post New Job
+
 **POST** `/jobs`
 
 Create a new job listing.
 
 **Request Body:**
+
 ```json
 {
   "title": "Senior Frontend Developer",
@@ -790,6 +865,7 @@ Create a new job listing.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -800,14 +876,17 @@ Create a new job listing.
 ---
 
 ### 6. Get Job by ID
+
 **GET** `/jobs/:id`
 
 Get details of a specific job posted by recruiter.
 
 **URL Parameters:**
+
 - `id` - Job ID
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -818,16 +897,19 @@ Get details of a specific job posted by recruiter.
 ---
 
 ### 7. Update Posted Job
+
 **PUT** `/jobs/:id`
 
 Update an existing job listing.
 
 **URL Parameters:**
+
 - `id` - Job ID
 
 **Request Body:** (Same as Post New Job - all fields optional)
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -838,14 +920,17 @@ Update an existing job listing.
 ---
 
 ### 8. Delete Posted Job
+
 **DELETE** `/jobs/:id`
 
 Delete a job listing.
 
 **URL Parameters:**
+
 - `id` - Job ID
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -860,11 +945,13 @@ Delete a job listing.
 **Base Path:** `/api/resources`
 
 ### 1. List All Resources
+
 **GET** `/`
 
 Get list of learning resources with filters.
 
 **Query Parameters:**
+
 - `skill` - Filter by related skill
 - `cost` - Filter by cost (Free, Paid, Freemium)
 - `platform` - Filter by platform
@@ -873,11 +960,13 @@ Get list of learning resources with filters.
 - `skip` - Pagination offset
 
 **Example Request:**
+
 ```
 GET /api/resources?skill=react&cost=Free&limit=20
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -906,14 +995,17 @@ GET /api/resources?skill=react&cost=Free&limit=20
 ---
 
 ### 2. Get Resource Details
+
 **GET** `/:id`
 
 Get details of a specific resource.
 
 **URL Parameters:**
+
 - `id` - Resource ID
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -924,6 +1016,7 @@ Get details of a specific resource.
 ---
 
 ### 3. Get Recommended Resources
+
 **GET** `/recommend`
 
 Get personalized resource recommendations.
@@ -931,6 +1024,7 @@ Get personalized resource recommendations.
 **Authentication Required:** Yes
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -950,6 +1044,7 @@ Get personalized resource recommendations.
 ---
 
 ### 4. Mark Resource Status
+
 **POST** `/:id/mark`
 
 Mark resource as completed or saved.
@@ -957,9 +1052,11 @@ Mark resource as completed or saved.
 **Authentication Required:** Yes
 
 **URL Parameters:**
+
 - `id` - Resource ID
 
 **Request Body:**
+
 ```json
 {
   "status": "completed"
@@ -967,10 +1064,12 @@ Mark resource as completed or saved.
 ```
 
 **Status Options:**
+
 - `completed`
 - `saved`
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -986,6 +1085,7 @@ Mark resource as completed or saved.
 ---
 
 ### 5. Create Resource
+
 **POST** `/`
 
 Create a new learning resource.
@@ -993,6 +1093,7 @@ Create a new learning resource.
 **Authentication Required:** Yes
 
 **Request Body:**
+
 ```json
 {
   "title": "React Complete Course",
@@ -1005,6 +1106,7 @@ Create a new learning resource.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1020,11 +1122,13 @@ Create a new learning resource.
 **Authentication Required:** Yes (Course Provider users only)
 
 ### 1. Get Provider Profile
+
 **GET** `/profile`
 
 Get course provider profile and uploaded resources.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1041,11 +1145,13 @@ Get course provider profile and uploaded resources.
 ---
 
 ### 2. Create Provider Profile
+
 **POST** `/profile`
 
 Create course provider profile.
 
 **Request Body:**
+
 ```json
 {
   "bio": "Educational content creator specializing in web development",
@@ -1054,6 +1160,7 @@ Create course provider profile.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1064,11 +1171,13 @@ Create course provider profile.
 ---
 
 ### 3. Update Provider Profile
+
 **PUT** `/profile`
 
 Update course provider profile.
 
 **Request Body:**
+
 ```json
 {
   "bio": "Updated bio",
@@ -1077,6 +1186,7 @@ Update course provider profile.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1087,11 +1197,13 @@ Update course provider profile.
 ---
 
 ### 4. Get Uploaded Resources
+
 **GET** `/resources`
 
 Get all resources uploaded by this provider.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1102,11 +1214,13 @@ Get all resources uploaded by this provider.
 ---
 
 ### 5. Upload New Resource
+
 **POST** `/resources`
 
 Upload a new learning resource.
 
 **Request Body:**
+
 ```json
 {
   "title": "Advanced React Patterns",
@@ -1119,6 +1233,7 @@ Upload a new learning resource.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1129,14 +1244,17 @@ Upload a new learning resource.
 ---
 
 ### 6. Update Resource
+
 **PUT** `/resources/:id`
 
 Update an uploaded resource.
 
 **URL Parameters:**
+
 - `id` - Resource ID
 
 **Request Body:**
+
 ```json
 {
   "title": "Updated title",
@@ -1145,6 +1263,7 @@ Update an uploaded resource.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1155,14 +1274,17 @@ Update an uploaded resource.
 ---
 
 ### 7. Delete Resource
+
 **DELETE** `/resources/:id`
 
 Delete an uploaded resource.
 
 **URL Parameters:**
+
 - `id` - Resource ID
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -1183,6 +1305,7 @@ Generate personalized career roadmap using AI.
 **Authentication Required:** No (but recommended)
 
 **Request Body:**
+
 ```json
 {
   "userId": "507f1f77bcf86cd799439011",
@@ -1191,6 +1314,7 @@ Generate personalized career roadmap using AI.
 ```
 
 **Response:**
+
 ```json
 {
   "jobTitle": "Senior Frontend Developer",
@@ -1270,6 +1394,7 @@ Generate personalized career roadmap using AI.
 Compare user profile with job requirements using AI.
 
 **Request Body:**
+
 ```json
 {
   "userId": "507f1f77bcf86cd799439011",
@@ -1278,6 +1403,7 @@ Compare user profile with job requirements using AI.
 ```
 
 **Response:**
+
 ```json
 {
   "matchScore": 75,
@@ -1310,6 +1436,7 @@ Compare user profile with job requirements using AI.
 ```
 
 **Match Score Formula:**
+
 - Skill Match: 60% weight
 - Experience Match: 25% weight
 - Requirement Fit: 15% weight
@@ -1326,17 +1453,22 @@ Get career advice from AI assistant.
 **Authentication Required:** Yes
 
 **Request Body:**
+
 ```json
 {
   "conversation": [
     { "role": "user", "content": "How do I become a frontend developer?" },
-    { "role": "assistant", "content": "Start by learning HTML, CSS, and JavaScript..." },
+    {
+      "role": "assistant",
+      "content": "Start by learning HTML, CSS, and JavaScript..."
+    },
     { "role": "user", "content": "What about React?" }
   ]
 }
 ```
 
 **Response:**
+
 ```json
 {
   "text": "React is a great next step! Focus on learning component-based architecture, state management, and hooks. Build small projects to practice."
@@ -1344,6 +1476,7 @@ Get career advice from AI assistant.
 ```
 
 **Chat Features:**
+
 - Context-aware responses based on user profile
 - Career-focused advice
 - Concise responses (max 200 characters)
@@ -1360,6 +1493,7 @@ Generate roadmap based on custom target role and timeframe.
 **Authentication Required:** Yes
 
 **Request Body:**
+
 ```json
 {
   "targetJob": "Full Stack Developer",
