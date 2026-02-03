@@ -73,7 +73,7 @@ router.post('/', isAuthenticated, authorizeUserType('general'), async (req, res)
 });
 
 // PUT /api/profile - Update profile
-router.put('/', isAuthenticated, authorizeUserType('general'), async (req, res) => {
+router.put('/', isAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
      const userProfile = await UserProfile.findOne({ user: user._id });  
