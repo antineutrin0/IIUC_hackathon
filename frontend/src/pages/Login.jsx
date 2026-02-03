@@ -41,7 +41,7 @@ const Login = () => {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        `http://localhost:8000/user/login`,
+        `https://iiuc-hackathon-backend.vercel.app/user/login`,
         formData,
         {
           headers: {
@@ -153,7 +153,7 @@ const Login = () => {
                 </Button>
                 <Button
                   onClick={() =>
-                    window.open("http://localhost:8000/auth/google", "_self")
+                    window.open("https://iiuc-hackathon-backend.vercel.app/auth/google", "_self")
                   }
                   className="w-full"
                   variant="outline"
